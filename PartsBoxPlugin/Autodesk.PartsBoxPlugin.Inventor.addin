@@ -1,0 +1,14 @@
+<Addin Type="Standard">
+  <!--Created for Autodesk Inventor Version 26.0-->
+  <ClassId>{1736870b-0921-49e4-9bff-b5b098099461}</ClassId>
+  <ClientId>{1736870b-0921-49e4-9bff-b5b098099461}</ClientId>
+  <DisplayName>PartsBoxPlugin</DisplayName>
+  <Description>PartsBoxPlugin</Description>
+  <Assembly>PartsBoxPlugin.dll</Assembly>
+  <LoadOnStartUp>1</LoadOnStartUp>
+  <UserUnloadable>1</UserUnloadable>
+  <Hidden>0</Hidden>
+  <SupportedSoftwareVersionGreaterThan>25..</SupportedSoftwareVersionGreaterThan>
+  <DataVersion>1</DataVersion>
+  <UserInterfaceVersion>1</UserInterfaceVersion>
+</Addin>

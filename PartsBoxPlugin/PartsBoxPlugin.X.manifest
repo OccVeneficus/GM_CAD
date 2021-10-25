@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+
+  <assemblyIdentity name="PartsBoxPlugin" version="1.0.0.0"></assemblyIdentity>
+
+  <clrClass clsid="{1736870b-0921-49e4-9bff-b5b098099461}" progid="PartsBoxPlugin.StandardAddInServer" threadingModel="Both" name="PartsBoxPlugin.StandardAddInServer" runtimeVersion=""></clrClass>
+
+  <file name="PartsBoxPlugin.dll" hashalg="SHA1"></file>
+
+</assembly>
