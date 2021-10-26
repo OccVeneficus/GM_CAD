@@ -50,9 +50,9 @@ namespace PartsBoxPlugin
 
         private void Button_OnExecute(NameValueMap Context)
         {
+            
             _window = new MainWindow();
             _window.Show();
-            //MessageBox.Show("Lol", "I DID IT", MessageBoxButton.OK);
         }
 
         private string getGUID()

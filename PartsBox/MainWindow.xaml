@@ -5,98 +5,82 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:PartsBox"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Box For Parts Wizard"
-    Width="600"
-    Height="450"
+    Title="Parts Box Wizard"
+    Width="640"
+    Height="460"
+    ResizeMode="NoResize"
     mc:Ignorable="d">
-    <Grid>
+    <Window.Resources>
+        <Image x:Key="DecorImage" Source="Resources/DecorImage.png">
+        </Image>
+    </Window.Resources>
+    <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <TextBlock
-            Grid.Row="0"
-            Grid.Column="0"
-            Margin="5"
-            VerticalAlignment="Center"
-            FontSize="16"
-            Text="Ширина:"/>
-        <TextBox
-            Margin="5"
-            x:Name="WidthTextBox"
-            Grid.Row="0"
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <TextBlock
+                    Margin="10 10 0 0"
+                    FontSize="28"
+                    Text="Parts Box Wizard"/>
+                <TextBlock
+                    Margin="10 0 0 10"
+                    FontSize="18"
+                    Text="Input data for your box below"/>
+            </StackPanel>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <local:ParameterInputControl Grid.Row="0" ParameterLabelName="Width:"/>
+                <local:ParameterInputControl Grid.Row="1" ParameterLabelName="Depth:"/>
+                <local:ParameterInputControl Grid.Row="2" ParameterLabelName="Heigth:"/>
+                <local:ParameterInputControl Grid.Row="3" ParameterLabelName="Outer wall width:"/>
+                <local:ParameterInputControl Grid.Row="4" ParameterLabelName="Inner wall width:"/>
+                <local:ParameterInputControl Grid.Row="5" ParameterLabelName="Box bottom width:"/>
+                <local:ParameterInputControl Grid.Row="6" ParameterLabelName="Cells per row:"/>
+                <local:ParameterInputControl Grid.Row="7" ParameterLabelName="Cells per column:"/>
+            </Grid>
+            <StackPanel
+                Grid.Row="2"
+                Margin="0 5 0 0"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Width="90"
+                    Height="30"
+                    Margin="5 5 5 5"
+                    Content="Build"
+                    FontSize="18"/>
+                <Button
+                    Width="90"
+                    Height="30"
+                    Margin="5 5 5 5"
+                    Content="Clear All"
+                    FontSize="18"/>
+            </StackPanel>
+        </Grid>
+        <Image
             Grid.Column="1"
-            Width="150"
-            Height="20"
-            VerticalAlignment="Center">
-        </TextBox>
-        <!--<StackPanel
-            Grid.Row="0"
-            Grid.Column="0"
-            Orientation="Horizontal">
-            <TextBlock
-                VerticalAlignment="Center"
-                FontSize="16"
-                Text="Ширина:"/>
-            <TextBox
-                x:Name="WidthTextBox"
-                VerticalAlignment="Center"
-                Width="150"
-                Height="20">
-            </TextBox>
-        </StackPanel>
-        <StackPanel
-            Grid.Row="1"
-            Grid.Column="0"
-            Orientation="Horizontal">
-            <TextBlock
-                VerticalAlignment="Center"
-                FontSize="16"
-                Text="Высота:"/>
-            <TextBox
-                x:Name="HeightTextBox"
-                VerticalAlignment="Center"
-                Width="150"
-                Height="20">
-            </TextBox>
-        </StackPanel>
-        <StackPanel
-            Grid.Row="2"
-            Grid.Column="0"
-            Orientation="Horizontal">
-            <TextBlock
-                VerticalAlignment="Center"
-                FontSize="16"
-                Text="Длина:"/>
-            <TextBox
-                x:Name="LengthTextBox"
-                VerticalAlignment="Center"
-                Width="150"
-                Height="20">
-            </TextBox>
-        </StackPanel>
-        <StackPanel
-            Grid.Row="3"
-            Grid.Column="0"
-            Orientation="Horizontal">
-            <TextBlock
-                VerticalAlignment="Center"
-                FontSize="16"
-                Text="Толщина внещних стенок:"/>
-            <TextBox
-                x:Name="WallWirthTextBox"
-                VerticalAlignment="Center"
-                Width="150"
-                Height="20">
-            </TextBox>
-        </StackPanel>-->
+            Margin="10"
+            Source="Resources/DecorImage.png">
+        </Image>
     </Grid>
 </Window>
