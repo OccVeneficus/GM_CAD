@@ -61,16 +61,16 @@
             <StackPanel
                 Grid.Row="2"
                 Margin="0 5 0 0"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Right"
                 Orientation="Horizontal">
                 <Button
-                    Width="90"
+                    Width="95"
                     Height="30"
                     Margin="5 5 5 5"
                     Content="Build"
                     FontSize="18"/>
                 <Button
-                    Width="90"
+                    Width="95"
                     Height="30"
                     Margin="5 5 5 5"
                     Content="Clear All"
