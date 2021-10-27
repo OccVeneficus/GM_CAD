@@ -7,7 +7,24 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="50"
     d:DesignWidth="300"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Validation.ErrorTemplate="{x:Null}">
+    <UserControl.Resources>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip">
+                        <Setter.Value>
+                            <ToolTip DataContext="{Binding RelativeSource={RelativeSource Self}, Path=PlacementTarget}">
+                                <ItemsControl ItemsSource="{Binding Path=(Validation.Errors)}" DisplayMemberPath="ErrorContent" />
+                            </ToolTip>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -19,10 +36,12 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             FontSize="18"
-            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ParameterInputControl}}, Path=ParameterLabelName}"/>
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ParameterInputControl}}, Mode=TwoWay, Path=ParameterLabelName}"/>
         <TextBox
             Grid.Column="1"
-            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ParameterInputControl}}, Path=TextBoxValue}"
+            x:Name="ValueInputTextBox"
+            Style="{StaticResource TextBoxStyle}"
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:ParameterInputControl}}, Mode=TwoWay, Path=TextBoxValue, NotifyOnValidationError=True}"
             Width="200"
             Margin="5 5 5 5"
             HorizontalAlignment="Center"

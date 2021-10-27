@@ -19,6 +19,8 @@ namespace PartsBox.ViewModels
         /// </summary>
         private readonly IMessageBoxService _messageBoxService;
 
+        private bool _isBuildEnabled;
+
         /// <summary>
         /// Хранит объект с параметрами для построения модели ящика для деталей.
         /// </summary>
