@@ -1,6 +1,7 @@
 using Inventor;
 using Microsoft.Win32;
 using PartsBox;
+using PartsBox.Views;
 using System;
 using System.Runtime.InteropServices;
 using System.Windows;
