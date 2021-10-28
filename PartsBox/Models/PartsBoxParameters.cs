@@ -56,6 +56,9 @@ namespace PartsBox.Models
         /// </summary>
         private int _cellsInLength;
 
+        /// <summary>
+        /// Словарь содержащий ошибки для каждого свойства.
+        /// </summary>
         private readonly Dictionary<string, List<string>> _propertyErrors = new Dictionary<string, List<string>>();
 
         #endregion
@@ -150,18 +153,27 @@ namespace PartsBox.Models
             set => Set(ref _cellsInLength, value);
         }
 
+        /// <summary>
+        /// Пуст ли словарь ошибок.
+        /// </summary>
         public bool IsErrorsEmpty => !HasErrors;
 
         #endregion
 
         #region Public Methods
 
+
+
+        #endregion
+
+        #region Private Methods
+
         /// <summary>
         /// Добавить в словарь сообщение об ошибке для указанного свойства.
         /// </summary>
         /// <param name="propertyName">Свойство с ошибкой.</param>
         /// <param name="errorMessage">Сообщение об ошибке.</param>
-        public void AddError(string propertyName, string errorMessage)
+        private void AddError(string propertyName, string errorMessage)
         {
             if (!_propertyErrors.ContainsKey(propertyName))
             {
@@ -171,10 +183,6 @@ namespace PartsBox.Models
 
             OnErrorsChanged(propertyName);
         }
-
-        #endregion
-
-        #region Private Methods
 
         /// <summary>
         /// Вызывает срабатывание события ErrorsChanged.
@@ -186,6 +194,10 @@ namespace PartsBox.Models
             RaisePropertyChanged(nameof(IsErrorsEmpty));
         }
 
+        /// <summary>
+        /// Очистить список ошибок для указанного свойства.
+        /// </summary>
+        /// <param name="propertyName">Имя свойства.</param>
         private void ClearErrors(string propertyName)
         {
             if (_propertyErrors.Remove(propertyName))
@@ -198,10 +210,13 @@ namespace PartsBox.Models
 
         #region INotifyDataErrorInfo Implementation
 
+        /// <inheritdoc/>
         public bool HasErrors => _propertyErrors.Any();
 
+        /// <inheritdoc/>
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
+        /// <inheritdoc/>
         public IEnumerable GetErrors(string propertyName)
         {
             if (!_propertyErrors.ContainsKey(propertyName))

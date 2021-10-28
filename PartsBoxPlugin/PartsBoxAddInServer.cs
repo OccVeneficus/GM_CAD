@@ -14,7 +14,7 @@ namespace PartsBoxPlugin
     /// the AddIn is via the methods on this interface.
     /// </summary>
     [GuidAttribute("1736870b-0921-49e4-9bff-b5b098099461")]
-    public class StandardAddInServer : Inventor.ApplicationAddInServer
+    public class PartsBoxAddInServer : Inventor.ApplicationAddInServer
     {
 
         // Inventor application object.
@@ -22,9 +22,9 @@ namespace PartsBoxPlugin
 
         private ButtonDefinition _button;
 
-        private Window _window = new MainWindow();
+        private Window _window;
 
-        public StandardAddInServer()
+        public PartsBoxAddInServer()
         {
         }
 
@@ -39,10 +39,10 @@ namespace PartsBoxPlugin
             // Initialize AddIn members.
             m_inventorApplication = addInSiteObject.Application;
             _button = m_inventorApplication.CommandManager.ControlDefinitions.AddButtonDefinition(
-                "Test", "Test", CommandTypesEnum.kShapeEditCmdType, getGUID());
+                "Build", "Build", CommandTypesEnum.kShapeEditCmdType, getGUID());
             var partRibbon = m_inventorApplication.UserInterfaceManager.Ribbons["Part"];
             var toolsTab = partRibbon.RibbonTabs["id_TabTools"];
-            var customPanel = toolsTab.RibbonPanels.Add("TestName", "Test", getGUID());
+            var customPanel = toolsTab.RibbonPanels.Add("Parts Box Wizard", "Build", getGUID());
             _button.OnExecute += Button_OnExecute;
             customPanel.CommandControls.AddButton(_button);
             // TODO: Add ApplicationAddInServer.Activate implementation.
@@ -51,7 +51,10 @@ namespace PartsBoxPlugin
 
         private void Button_OnExecute(NameValueMap Context)
         {
-            
+            if(_window != null)
+            {
+                return;
+            }
             _window = new MainWindow();
             _window.Show();
         }
@@ -59,7 +62,7 @@ namespace PartsBoxPlugin
         private string getGUID()
         {
             GuidAttribute addInCLSID = (GuidAttribute)GuidAttribute.GetCustomAttribute(
-                typeof(StandardAddInServer),
+                typeof(PartsBoxAddInServer),
                 typeof(GuidAttribute));
             return "{" + addInCLSID.Value + "}";
         }
