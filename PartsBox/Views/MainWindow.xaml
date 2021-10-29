@@ -146,7 +146,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     FontSize="18"
-                    Text="Inner wall Width (mm):"/>
+                    Text="Inner wall width (mm):"/>
                 <TextBox
                     Grid.Row="4"
                     Grid.Column="1"
