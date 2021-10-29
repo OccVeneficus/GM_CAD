@@ -19,42 +19,42 @@ namespace PartsBox.Models
         /// <summary>
         /// Хранит ширину коробки.
         /// </summary>
-        private double _width;
+        private double _width = 150.0;
 
         /// <summary>
         /// Хранит длину коробки.
         /// </summary>
-        private double _lenght;
+        private double _lenght = 150.0;
 
         /// <summary>
         /// Хранит высоту коробки.
         /// </summary>
-        private double _height;
+        private double _height = 50.0;
 
         /// <summary>
         /// Хранит ширину внешней стенки.
         /// </summary>
-        private double _outerWallWidth;
+        private double _outerWallWidth = 5.0;
 
         /// <summary>
         /// Хранит ширину внутренних перегородок.
         /// </summary>
-        private double _innerWallWidth;
+        private double _innerWallWidth = 2.0;
 
         /// <summary>
         /// Хранит толщину днища коробки.
         /// </summary>
-        private double _boxBottomWidth;
+        private double _boxBottomWidth = 5.0;
 
         /// <summary>
         /// Количество ячеек, которое приходится на ширину (строки).
         /// </summary>
-        private int _cellsInWidth;
+        private int _cellsInWidth = 1;
 
         /// <summary>
         /// Количество ячеек, которое приходится на длину (столбцы).
         /// </summary>
-        private int _cellsInLength;
+        private int _cellsInLength = 1;
 
         /// <summary>
         /// Словарь содержащий ошибки для каждого свойства.
