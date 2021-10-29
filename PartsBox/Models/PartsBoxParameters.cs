@@ -75,9 +75,11 @@ namespace PartsBox.Models
             {
                 ClearErrors(nameof(Width));
                 Set(ref _width, value);
-                if(value < 150.0)
+                const double min = 150.0;
+                const double max = 750.0;
+                if (!Validator.ValidateRange(min, max, value))
                 {
-                    AddError(nameof(Width), "Can't be less than 150.0");
+                    AddError(nameof(Width), $"{nameof(Width)} must be between 150.0 and 750.0 mm.");
                 }
             } 
         }
@@ -92,9 +94,11 @@ namespace PartsBox.Models
             {
                 ClearErrors(nameof(Length));
                 Set(ref _lenght, value);
-                if (value < 150.0)
+                const double min = 150.0;
+                const double max = 750.0;
+                if (!Validator.ValidateRange(min, max, value))
                 {
-                    AddError(nameof(Length), "Can't be less than 150.0");
+                    AddError(nameof(Length), $"{nameof(Length)} must be between 150.0 and 750.0 mm.");
                 }
             } 
         }
