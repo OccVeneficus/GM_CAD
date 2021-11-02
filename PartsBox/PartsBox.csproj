@@ -74,6 +74,7 @@
     <Compile Include="ServiceInterfaces\MessageButtons.cs" />
     <Compile Include="ServiceInterfaces\MessageIcon.cs" />
     <Compile Include="Services\MessageBoxService.cs" />
+    <Compile Include="ViewModels\DataErrorViewModelBase.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
