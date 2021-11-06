@@ -67,6 +67,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="Behaviours\TextBoxInputBehavior.cs" />
     <Compile Include="Converters\InvertBooleanConverter.cs" />
     <Compile Include="Models\PartsBoxParameters.cs" />
     <Compile Include="Models\Validator.cs" />

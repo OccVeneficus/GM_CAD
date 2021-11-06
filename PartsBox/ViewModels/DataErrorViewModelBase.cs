@@ -12,15 +12,23 @@ namespace PartsBox.ViewModels
 {
     public class DataErrorViewModelBase : ViewModelBase, INotifyDataErrorInfo
     {
+        private bool _isErrorsEmpty;
+
         public bool HasErrors
         {
             get
             {
-                return GetErrors(null).OfType<object>().Any();
+                var result = GetErrors(null).OfType<object>().Any();
+                IsErrorsEmpty = !result;
+                return result;
             }
         }
 
-        public bool IsErrorsEmpty => !HasErrors;
+        public bool IsErrorsEmpty
+        {
+            get => _isErrorsEmpty;
+            set => Set(ref _isErrorsEmpty, value);
+        }
 
         public virtual void ForceValidation()
         {
@@ -29,40 +37,9 @@ namespace PartsBox.ViewModels
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
-        /// <summary>
-        /// Вызывает срабатывание события ErrorsChanged.
-        /// </summary>
-        /// <param name="propertyName">Имя свойства, у которого изменились ошибки.</param>
-        protected void OnErrorsChanged(string propertyName)
-        {
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-            RaisePropertyChanged(nameof(IsErrorsEmpty));
-        }
-
         public virtual IEnumerable GetErrors([CallerMemberName] string propertyName = null)
         {
-            var result = Enumerable.Empty<object>();
-            OnErrorsChanged(propertyName);
-            return result;
-        }
-
-        //protected void OnErrorsChanged([CallerMemberName] string propertyName = null)
-        //{
-        //    OnErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
-        //}
-
-        //protected virtual void OnErrorsChanged(object sender, DataErrorsChangedEventArgs e)
-        //{
-        //    var handler = ErrorsChanged;
-        //    if (handler != null)
-        //    {
-        //        handler(sender, e);
-        //    }
-        //}
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            OnPropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            return Enumerable.Empty<object>();
         }
 
         protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)

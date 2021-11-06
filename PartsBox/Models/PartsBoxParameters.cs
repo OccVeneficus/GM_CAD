@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using PartsBox.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace PartsBox.Models
     /// <summary>
     /// Класс для хранения параметров построения объекта коробки для деталей.
     /// </summary>
-    public class PartsBoxParameters : ViewModelBase, INotifyDataErrorInfo
+    public class PartsBoxParameters : DataErrorViewModelBase
     {
         #region PrivateFields
 
@@ -56,11 +57,6 @@ namespace PartsBox.Models
         /// </summary>
         private int _cellsInLength = 1;
 
-        /// <summary>
-        /// Словарь содержащий ошибки для каждого свойства.
-        /// </summary>
-        private readonly Dictionary<string, List<string>> _propertyErrors = new Dictionary<string, List<string>>();
-
         #endregion
 
         #region Properties
@@ -73,14 +69,7 @@ namespace PartsBox.Models
             get => _width;
             set 
             {
-                ClearErrors(nameof(Width));
                 Set(ref _width, value);
-                const double min = 150.0;
-                const double max = 750.0;
-                if (!Validator.ValidateRange(min, max, value))
-                {
-                    AddError(nameof(Width), $"{nameof(Width)} must be between 150.0 and 750.0 mm.");
-                }
             } 
         }
 
@@ -92,14 +81,7 @@ namespace PartsBox.Models
             get => _lenght;
             set 
             {
-                ClearErrors(nameof(Length));
                 Set(ref _lenght, value);
-                const double min = 150.0;
-                const double max = 750.0;
-                if (!Validator.ValidateRange(min, max, value))
-                {
-                    AddError(nameof(Length), $"{nameof(Length)} must be between 150.0 and 750.0 mm.");
-                }
             } 
         }
 
@@ -157,77 +139,34 @@ namespace PartsBox.Models
             set => Set(ref _cellsInLength, value);
         }
 
-        /// <summary>
-        /// Пуст ли словарь ошибок.
-        /// </summary>
-        public bool IsErrorsEmpty => !HasErrors;
-
-        #endregion
-
-        #region Public Methods
-
-
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Добавить в словарь сообщение об ошибке для указанного свойства.
-        /// </summary>
-        /// <param name="propertyName">Свойство с ошибкой.</param>
-        /// <param name="errorMessage">Сообщение об ошибке.</param>
-        private void AddError(string propertyName, string errorMessage)
-        {
-            if (!_propertyErrors.ContainsKey(propertyName))
-            {
-                _propertyErrors.Add(propertyName, new List<string>());
-            }
-            _propertyErrors[propertyName].Add(errorMessage);
-
-            OnErrorsChanged(propertyName);
-        }
-
-        /// <summary>
-        /// Вызывает срабатывание события ErrorsChanged.
-        /// </summary>
-        /// <param name="propertyName">Имя свойства, у которого изменились ошибки.</param>
-        private void OnErrorsChanged(string propertyName)
-        {
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-            RaisePropertyChanged(nameof(IsErrorsEmpty));
-        }
-
-        /// <summary>
-        /// Очистить список ошибок для указанного свойства.
-        /// </summary>
-        /// <param name="propertyName">Имя свойства.</param>
-        private void ClearErrors(string propertyName)
-        {
-            if (_propertyErrors.Remove(propertyName))
-            {
-                OnErrorsChanged(propertyName);
-            }
-        }
 
         #endregion
 
         #region INotifyDataErrorInfo Implementation
 
         /// <inheritdoc/>
-        public bool HasErrors => _propertyErrors.Any();
-
-        /// <inheritdoc/>
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
-
-        /// <inheritdoc/>
-        public IEnumerable GetErrors(string propertyName)
+        public override IEnumerable GetErrors(string propertyName)
         {
-            if (!_propertyErrors.ContainsKey(propertyName))
+            foreach (var obj in base.GetErrors(propertyName))
             {
-                return null;
+                yield return obj;
             }
-            return _propertyErrors[propertyName];
+
+            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(Width))
+            {
+                if (!Validator.ValidateRange(150.0, 700.0, Width))
+                {
+                    yield return $"{nameof(Width)} must be between 150.0 and 700.0 mm.";
+                }
+            }
+
+            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(Length))
+            {
+                if (!Validator.ValidateRange(150.0, 700.0, Length))
+                {
+                    yield return $"{nameof(Length)} must be between 150.0 and 700.0 mm.";
+                }
+            }
         }
 
         #endregion

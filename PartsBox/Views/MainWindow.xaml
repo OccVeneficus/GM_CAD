@@ -5,7 +5,7 @@
     xmlns:converters="clr-namespace:PartsBox.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:PartsBox.Views"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Behaviors="clr-namespace:PartsBox.Behaviours"
     Title="Parts Box Wizard"
     Width="580"
     Height="440"
@@ -14,7 +14,6 @@
     <Window.Resources>
         <Image x:Key="DecorImage" Source="../Resources/DecorImage.png"/>
         <Style x:Key="ErrorTextBoxStyle" TargetType="TextBox">
-            <!--<Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>-->
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="True">
                     <Setter Property="ToolTip">
@@ -84,7 +83,11 @@
                     VerticalAlignment="Center"
                     FontSize="18"
                     Style="{StaticResource ErrorTextBoxStyle}"
-                    Text="{Binding CurrentPartsBoxParametes.Width, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    Text="{Binding CurrentPartsBoxParametes.Width, ValidatesOnExceptions=True, ValidatesOnNotifyDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}">
+                    <i:Interaction.Behaviors>
+                        <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
+                    </i:Interaction.Behaviors>
+                </TextBox>
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="0"
@@ -102,7 +105,7 @@
                     VerticalAlignment="Center"
                     FontSize="18"
                     Style="{StaticResource ErrorTextBoxStyle}"
-                    Text="{Binding CurrentPartsBoxParametes.Length, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    Text="{Binding CurrentPartsBoxParametes.Length, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="0"
@@ -120,7 +123,7 @@
                     VerticalAlignment="Center"
                     FontSize="18"
                     Style="{StaticResource ErrorTextBoxStyle}"
-                    Text="{Binding CurrentPartsBoxParametes.Height, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    Text="{Binding CurrentPartsBoxParametes.Height, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock
                     Grid.Row="3"
                     Grid.Column="0"
@@ -138,7 +141,7 @@
                     VerticalAlignment="Center"
                     FontSize="18"
                     Style="{StaticResource ErrorTextBoxStyle}"
-                    Text="{Binding CurrentPartsBoxParametes.OuterWallWidth, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    Text="{Binding CurrentPartsBoxParametes.OuterWallWidth, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock
                     Grid.Row="4"
                     Grid.Column="0"
@@ -156,7 +159,7 @@
                     VerticalAlignment="Center"
                     FontSize="18"
                     Style="{StaticResource ErrorTextBoxStyle}"
-                    Text="{Binding CurrentPartsBoxParametes.InnerWallWidth, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    Text="{Binding CurrentPartsBoxParametes.InnerWallWidth, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock
                     Grid.Row="5"
                     Grid.Column="0"
@@ -174,7 +177,7 @@
                     VerticalAlignment="Center"
                     FontSize="18"
                     Style="{StaticResource ErrorTextBoxStyle}"
-                    Text="{Binding CurrentPartsBoxParametes.BoxBottomWidth, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    Text="{Binding CurrentPartsBoxParametes.BoxBottomWidth, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock
                     Grid.Row="6"
                     Grid.Column="0"
@@ -192,7 +195,7 @@
                     VerticalAlignment="Center"
                     FontSize="18"
                     Style="{StaticResource ErrorTextBoxStyle}"
-                    Text="{Binding CurrentPartsBoxParametes.CellsInLength, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    Text="{Binding CurrentPartsBoxParametes.CellsInLength, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock
                     Grid.Row="7"
                     Grid.Column="0"
@@ -210,7 +213,7 @@
                     VerticalAlignment="Center"
                     FontSize="18"
                     Style="{StaticResource ErrorTextBoxStyle}"
-                    Text="{Binding CurrentPartsBoxParametes.CellsInWidth, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    Text="{Binding CurrentPartsBoxParametes.CellsInWidth, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <StackPanel
                 Grid.Row="2"
@@ -223,7 +226,7 @@
                     Margin="5 5 5 5"
                     Content="Build"
                     FontSize="18"
-                    IsEnabled="{Binding CurrentPartsBoxParametes.IsErrorsEmpty}"/>
+                    IsEnabled="{Binding CurrentPartsBoxParametes.IsErrorsEmpty, UpdateSourceTrigger=PropertyChanged}"/>
                 <Button
                     Width="100"
                     Height="30"
