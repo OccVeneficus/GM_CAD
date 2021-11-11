@@ -67,7 +67,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Behaviours\TextBoxInputBehavior.cs" />
     <Compile Include="Converters\InvertBooleanConverter.cs" />
     <Compile Include="Models\PartsBoxParameters.cs" />
     <Compile Include="Models\Validator.cs" />
@@ -80,15 +79,8 @@
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\ParameterInputControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\ParameterInputControl.xaml.cs">
-      <DependentUpon>ParameterInputControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

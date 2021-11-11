@@ -10,38 +10,31 @@ using System.Threading.Tasks;
 
 namespace PartsBox.ViewModels
 {
+    /// <summary>
+    /// Базовый класс ViewModel с реализацией интерфейса INotifyDataErrorInfo.
+    /// <see cref="INotifyDataErrorInfo"/>
+    /// <see cref="ViewModelBase"/>
+    /// </summary>
     public class DataErrorViewModelBase : ViewModelBase, INotifyDataErrorInfo
     {
-        private bool _isErrorsEmpty;
+        /// <inheritdoc/>
+        public bool HasErrors => GetErrors(null).OfType<object>().Any();
 
-        public bool HasErrors
-        {
-            get
-            {
-                var result = GetErrors(null).OfType<object>().Any();
-                IsErrorsEmpty = !result;
-                return result;
-            }
-        }
-
-        public bool IsErrorsEmpty
-        {
-            get => _isErrorsEmpty;
-            set => Set(ref _isErrorsEmpty, value);
-        }
-
+        /// <summary>
+        /// Вызвать проверку данных из кода.
+        /// </summary>
         public virtual void ForceValidation()
         {
             RaisePropertyChanged(null);
         }
 
+        /// <inheritdoc/>
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
-        public virtual IEnumerable GetErrors([CallerMemberName] string propertyName = null)
-        {
-            return Enumerable.Empty<object>();
-        }
+        /// <inheritdoc/>
+        public virtual IEnumerable GetErrors([CallerMemberName] string propertyName = null) => Enumerable.Empty<object>();
 
+        /// <inheritdoc/>
         protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             RaisePropertyChanged(nameof(sender), e);

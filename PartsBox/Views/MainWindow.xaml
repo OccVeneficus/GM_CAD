@@ -5,7 +5,7 @@
     xmlns:converters="clr-namespace:PartsBox.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:PartsBox.Views"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Behaviors="clr-namespace:PartsBox.Behaviours"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     Title="Parts Box Wizard"
     Width="580"
     Height="440"
@@ -25,6 +25,24 @@
                     </Setter>
                     <Setter Property="Background" Value="LightSalmon"/>
                 </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="IsEnabled" Value="False"/>
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=WidthTextBox}" Value="False"/>
+                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=LengthTextBox}" Value="False"/>
+                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=HeightTextBox}" Value="False"/>
+                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=OuterWallWidthTextBox}" Value="False"/>
+                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=InnerWallWidthTextBox}" Value="False"/>
+                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=BoxBottomWidthTextBox}" Value="False"/>
+                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=CellsInLengthTextBox}" Value="False"/>
+                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=CellsInWidthTextBox}" Value="False"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="IsEnabled" Value="True"/>
+                </MultiDataTrigger>
             </Style.Triggers>
         </Style>
         <converters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
@@ -75,6 +93,7 @@
                     FontSize="18"
                     Text="Width (mm):"/>
                 <TextBox
+                    x:Name="WidthTextBox"
                     Grid.Row="0"
                     Grid.Column="1"
                     Width="100"
@@ -84,9 +103,6 @@
                     FontSize="18"
                     Style="{StaticResource ErrorTextBoxStyle}"
                     Text="{Binding CurrentPartsBoxParametes.Width, ValidatesOnExceptions=True, ValidatesOnNotifyDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}">
-                    <i:Interaction.Behaviors>
-                        <Behaviors:TextBoxInputBehavior InputMode="DecimalInput"/>
-                    </i:Interaction.Behaviors>
                 </TextBox>
                 <TextBlock
                     Grid.Row="1"
@@ -98,6 +114,7 @@
                     Text="Length (mm):"/>
                 <TextBox
                     Grid.Row="1"
+                    x:Name="LengthTextBox"
                     Grid.Column="1"
                     Width="100"
                     Margin="5 5 5 5"
@@ -115,6 +132,7 @@
                     FontSize="18"
                     Text="Height (mm):"/>
                 <TextBox
+                    x:Name="HeightTextBox"
                     Grid.Row="2"
                     Grid.Column="1"
                     Width="100"
@@ -134,6 +152,7 @@
                     Text="Outer wall width (mm):"/>
                 <TextBox
                     Grid.Row="3"
+                    x:Name="OuterWallWidthTextBox"
                     Grid.Column="1"
                     Width="100"
                     Margin="5 5 5 5"
@@ -152,6 +171,7 @@
                     Text="Inner wall width (mm):"/>
                 <TextBox
                     Grid.Row="4"
+                    x:Name="InnerWallWidthTextBox"
                     Grid.Column="1"
                     Width="100"
                     Margin="5 5 5 5"
@@ -170,6 +190,7 @@
                     Text="Box bottom width (mm):"/>
                 <TextBox
                     Grid.Row="5"
+                    x:Name="BoxBottomWidthTextBox"
                     Grid.Column="1"
                     Width="100"
                     Margin="5 5 5 5"
@@ -188,6 +209,7 @@
                     Text="Cells in length :"/>
                 <TextBox
                     Grid.Row="6"
+                    x:Name="CellsInLengthTextBox"
                     Grid.Column="1"
                     Width="100"
                     Margin="5 5 5 5"
@@ -206,6 +228,7 @@
                     Text="Cells in width:"/>
                 <TextBox
                     Grid.Row="7"
+                    x:Name="CellsInWidthTextBox"
                     Grid.Column="1"
                     Width="100"
                     Margin="5 5 5 5"
@@ -226,10 +249,11 @@
                     Margin="5 5 5 5"
                     Content="Build"
                     FontSize="18"
-                    IsEnabled="{Binding CurrentPartsBoxParametes.IsErrorsEmpty, UpdateSourceTrigger=PropertyChanged}"/>
+                    Style="{StaticResource ButtonStyle}"/>
                 <Button
                     Width="100"
                     Height="30"
+                    Command="{Binding SetDefaultCommand}"
                     Margin="5 5 5 5"
                     Content="Set Default"
                     FontSize="18"/>

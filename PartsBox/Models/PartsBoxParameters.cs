@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -64,6 +65,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к ширине коробки.
         /// </summary>
+        [DefaultValue(150.0)]
         public double Width
         {
             get => _width;
@@ -76,6 +78,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к длине коробки.
         /// </summary>
+        [DefaultValue(150.0)]
         public double Length
         {
             get => _lenght;
@@ -88,6 +91,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к высоте коробки.
         /// </summary>
+        [DefaultValue(50.0)]
         public double Height
         {
             get => _height;
@@ -97,6 +101,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к ширине внешних стенок.
         /// </summary>
+        [DefaultValue(5.0)]
         public double OuterWallWidth
         {
             get => _outerWallWidth;
@@ -106,6 +111,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к ширине внутренних стенок.
         /// </summary>
+        [DefaultValue(2.0)]
         public double InnerWallWidth
         {
             get => _innerWallWidth;
@@ -115,6 +121,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к толщине днища коробки.
         /// </summary>
+        [DefaultValue(5.0)]
         public double BoxBottomWidth
         {
             get => _boxBottomWidth;
@@ -124,6 +131,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к количеству ячеек на ширину коробки (строки).
         /// </summary>
+        [DefaultValue(1)]
         public int CellsInWidth
         {
             get => _cellsInWidth;
@@ -133,6 +141,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к количеству ячеек на длину коробки (столбцы).
         /// </summary>
+        [DefaultValue(1)]
         public int CellsInLength
         {
             get => _cellsInLength;
@@ -142,11 +151,36 @@ namespace PartsBox.Models
 
         #endregion
 
+        #region PublicMethods
+
+        /// <summary>
+        /// Устанавливает стандартные (минимальные) значения параметрам ящика.
+        /// </summary>
+        public void SetDefaultValues()
+        {
+            var properties = GetType().GetProperties();
+            foreach (var property in properties)
+            {
+                AttributeCollection attributes =
+                        TypeDescriptor.GetProperties(this)[property.Name].Attributes;
+                DefaultValueAttribute attribute =
+                        (DefaultValueAttribute)attributes[typeof(DefaultValueAttribute)];
+                if (attribute == null)
+                {
+                    continue;
+                }
+                property.SetValue(this, attribute.Value);
+            }
+        }
+
+        #endregion
+
         #region INotifyDataErrorInfo Implementation
 
         /// <inheritdoc/>
         public override IEnumerable GetErrors(string propertyName)
         {
+            //TODO: большой метод, повторяющийся код, подумать как переделать
             foreach (var obj in base.GetErrors(propertyName))
             {
                 yield return obj;
@@ -165,6 +199,54 @@ namespace PartsBox.Models
                 if (!Validator.ValidateRange(150.0, 700.0, Length))
                 {
                     yield return $"{nameof(Length)} must be between 150.0 and 700.0 mm.";
+                }
+            }
+
+            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(Height))
+            {
+                if (!Validator.ValidateRange(50.0, 150.0, Height))
+                {
+                    yield return $"{nameof(Height)} must be between 50.0 and 150.0 mm.";
+                }
+            }
+
+            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(OuterWallWidth))
+            {
+                if (!Validator.ValidateRange(5.0, 10.0, OuterWallWidth))
+                {
+                    yield return $"{nameof(OuterWallWidth)} must be between 5.0 and 10.0 mm.";
+                }
+            }
+
+            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(InnerWallWidth))
+            {
+                if (!Validator.ValidateRange(2.0, 5.0, InnerWallWidth))
+                {
+                    yield return $"{nameof(InnerWallWidth)} must be between 2.0 and 5.0 mm.";
+                }
+            }
+
+            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(BoxBottomWidth))
+            {
+                if (!Validator.ValidateRange(5.0, 10.0, BoxBottomWidth))
+                {
+                    yield return $"{nameof(BoxBottomWidth)} must be between 5.0 and 10.0 mm.";
+                }
+            }
+
+            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(CellsInWidth))
+            {
+                if(!Validator.ValidateCellsNumber(Width, InnerWallWidth, OuterWallWidth, CellsInWidth))
+                {
+                    yield return $"{nameof(CellsInWidth)} incorrect ";
+                }
+            }
+
+            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(CellsInLength))
+            {
+                if (!Validator.ValidateCellsNumber(Width, InnerWallWidth, OuterWallWidth, CellsInLength))
+                {
+                    yield return $"{nameof(CellsInLength)} incorrect ";
                 }
             }
         }
