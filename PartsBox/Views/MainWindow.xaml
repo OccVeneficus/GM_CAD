@@ -10,6 +10,7 @@
     Width="580"
     Height="440"
     ResizeMode="NoResize"
+    Name="Window"
     mc:Ignorable="d">
     <Window.Resources>
         <Image x:Key="DecorImage" Source="../Resources/DecorImage.png"/>
@@ -249,7 +250,9 @@
                     Margin="5 5 5 5"
                     Content="Build"
                     FontSize="18"
-                    Style="{StaticResource ButtonStyle}"/>
+                    Style="{StaticResource ButtonStyle}"
+                    Command="{Binding BuildCommand}"
+                    CommandParameter="{Binding ElementName=Window}"/>
                 <Button
                     Width="100"
                     Height="30"

@@ -22,6 +22,11 @@ namespace PartsBox.ViewModels
         private RelayCommand _setDefaultCommand;
 
         /// <summary>
+        /// Хранит команду построения модели.
+        /// </summary>
+        private RelayCommand<IClosable> _buildCommand;
+
+        /// <summary>
         /// Хранит сервис для работы с окном сообщения.
         /// </summary>
         private readonly IMessageBoxService _messageBoxService;
@@ -57,6 +62,35 @@ namespace PartsBox.ViewModels
                             }
                         } 
                     ));
+            }
+        }
+        
+        /// <summary>
+        /// Дает доступ к команде построения модели по заданным параметрам.
+        /// </summary>
+        public RelayCommand<IClosable> BuildCommand
+        {
+            get
+            {
+                return _buildCommand ??
+                    (_buildCommand = new RelayCommand<IClosable>((obj) =>
+                       {
+                           CloseWindow(obj);
+                       }
+                    ));
+            }
+        }
+
+        /// <summary>
+        /// Метод для закрытия окна.
+        /// </summary>
+        /// <param name="window">Окно для закрытия.</param>
+        private void CloseWindow(IClosable window)
+        {
+            if (window != null)
+            {
+                window.DialogResult = true;
+                window.Close();
             }
         }
 

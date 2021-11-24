@@ -148,6 +148,29 @@ namespace PartsBox.Models
             set => Set(ref _cellsInLength, value);
         }
 
+        /// <summary>
+        /// Рассчитать ширину одной ячейки.
+        /// </summary>
+        public double GetOneCellWidth
+        {
+            get
+            {
+                var cellsCombinedWidth = Width - 2 * OuterWallWidth - (CellsInWidth - 1) * InnerWallWidth;
+                return cellsCombinedWidth / CellsInWidth;
+            }
+        }
+
+        /// <summary>
+        /// Рассчитать длину одной ячейки.
+        /// </summary>
+        public double GetOneCellLength
+        {
+            get
+            {
+                var cellsCombinedWidth = Length - 2 * OuterWallWidth - (CellsInLength - 1) * InnerWallWidth;
+                return cellsCombinedWidth / CellsInLength;
+            }
+        }
 
         #endregion
 
@@ -177,10 +200,39 @@ namespace PartsBox.Models
 
         #region INotifyDataErrorInfo Implementation
 
+        /// <summary>
+        /// Валидация для свойств с ограниченным диапазоном значений.
+        /// </summary>
+        /// <param name="min">Начало диапазона.</param>
+        /// <param name="max">Конец диапазона.</param>
+        /// <param name="value">Значение.</param>
+        /// <param name="propertyName">Имя свойства.</param>
+        /// <returns>Список ошибок.</returns>
+        private IEnumerable GetDimensionsError(double min, double max, double value, string propertyName)
+        {
+            if(!Validator.ValidateRange(min, max, value))
+            {
+               yield return GetRangeErrorString(min, max, propertyName);
+            }
+        }
+
+        /// <summary>
+        /// Генерация строки с информацией об ошибке диапазона.
+        /// </summary>
+        /// <param name="min">Начало диапазона.</param>
+        /// <param name="max">Конец диапазона.</param>
+        /// <param name="propertyName">Имя свойства.</param>
+        /// <returns>Строка с сообщением об ошибке.</returns>
+        private string GetRangeErrorString(double min, double max, string propertyName)
+        {
+            return $"{propertyName} must be between {min} and {max} mm.";
+        }
+
         /// <inheritdoc/>
         public override IEnumerable GetErrors(string propertyName)
         {
-            //TODO: большой метод, повторяющийся код, подумать как переделать
+            // Дальше поделить не получается. Метод при не указанном propertyName
+            // должен проверить все свойства на ошибки
             foreach (var obj in base.GetErrors(propertyName))
             {
                 yield return obj;
@@ -188,55 +240,55 @@ namespace PartsBox.Models
 
             if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(Width))
             {
-                if (!Validator.ValidateRange(150.0, 700.0, Width))
+                foreach(var value in GetDimensionsError(150.0, 700.0, Width, nameof(Width))) 
                 {
-                    yield return $"{nameof(Width)} must be between 150.0 and 700.0 mm.";
+                    yield return value;
                 }
             }
 
             if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(Length))
             {
-                if (!Validator.ValidateRange(150.0, 700.0, Length))
+                foreach (var value in GetDimensionsError(150.0, 700.0, Length, nameof(Length)))
                 {
-                    yield return $"{nameof(Length)} must be between 150.0 and 700.0 mm.";
+                    yield return value;
                 }
             }
 
             if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(Height))
             {
-                if (!Validator.ValidateRange(50.0, 150.0, Height))
+                foreach (var value in GetDimensionsError(50.0, 150.0, Height, nameof(Height)))
                 {
-                    yield return $"{nameof(Height)} must be between 50.0 and 150.0 mm.";
+                    yield return value;
                 }
             }
 
             if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(OuterWallWidth))
             {
-                if (!Validator.ValidateRange(5.0, 10.0, OuterWallWidth))
+                foreach (var value in GetDimensionsError(5.0, 10.0, OuterWallWidth, nameof(OuterWallWidth)))
                 {
-                    yield return $"{nameof(OuterWallWidth)} must be between 5.0 and 10.0 mm.";
+                    yield return value;
                 }
             }
 
             if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(InnerWallWidth))
             {
-                if (!Validator.ValidateRange(2.0, 5.0, InnerWallWidth))
+                foreach (var value in GetDimensionsError(2.0, 5.0, InnerWallWidth, nameof(InnerWallWidth)))
                 {
-                    yield return $"{nameof(InnerWallWidth)} must be between 2.0 and 5.0 mm.";
+                    yield return value;
                 }
             }
 
             if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(BoxBottomWidth))
             {
-                if (!Validator.ValidateRange(5.0, 10.0, BoxBottomWidth))
+                foreach (var value in GetDimensionsError(5.0, 10.0, BoxBottomWidth, nameof(BoxBottomWidth)))
                 {
-                    yield return $"{nameof(BoxBottomWidth)} must be between 5.0 and 10.0 mm.";
+                    yield return value;
                 }
             }
 
             if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(CellsInWidth))
             {
-                if(!Validator.ValidateCellsNumber(Width, InnerWallWidth, OuterWallWidth, CellsInWidth))
+                if (!Validator.ValidateCellsNumber(Width, InnerWallWidth, OuterWallWidth, CellsInWidth))
                 {
                     yield return $"{nameof(CellsInWidth)} incorrect ";
                 }
@@ -244,7 +296,7 @@ namespace PartsBox.Models
 
             if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(CellsInLength))
             {
-                if (!Validator.ValidateCellsNumber(Width, InnerWallWidth, OuterWallWidth, CellsInLength))
+                if (!Validator.ValidateCellsNumber(Length, InnerWallWidth, OuterWallWidth, CellsInLength))
                 {
                     yield return $"{nameof(CellsInLength)} incorrect ";
                 }

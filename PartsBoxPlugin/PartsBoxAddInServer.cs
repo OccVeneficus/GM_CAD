@@ -1,6 +1,8 @@
+using InvAddIn;
 using Inventor;
 using Microsoft.Win32;
 using PartsBox;
+using PartsBox.ViewModels;
 using PartsBox.Views;
 using System;
 using System.Runtime.InteropServices;
@@ -51,12 +53,14 @@ namespace PartsBoxPlugin
 
         private void Button_OnExecute(NameValueMap Context)
         {
-            if(_window != null)
-            {
-                return;
-            }
             _window = new MainWindow();
-            _window.Show();
+            if ((bool)_window.ShowDialog())
+            {
+                var builder = new PartsBoxBuilder();
+                builder.Application = m_inventorApplication;
+                var boxParameters = ((MainVM)_window.DataContext).CurrentPartsBoxParametes;
+                builder.BuildPartsBox(boxParameters);
+            }
         }
 
         private string getGUID()
