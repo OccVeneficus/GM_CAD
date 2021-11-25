@@ -69,10 +69,7 @@ namespace PartsBox.Models
         public double Width
         {
             get => _width;
-            set 
-            {
-                Set(ref _width, value);
-            } 
+            set => Set(ref _width, value);
         }
 
         /// <summary>
@@ -82,10 +79,7 @@ namespace PartsBox.Models
         public double Length
         {
             get => _lenght;
-            set 
-            {
-                Set(ref _lenght, value);
-            } 
+            set => Set(ref _lenght, value);
         }
 
         /// <summary>
@@ -223,7 +217,7 @@ namespace PartsBox.Models
         /// <param name="max">Конец диапазона.</param>
         /// <param name="propertyName">Имя свойства.</param>
         /// <returns>Строка с сообщением об ошибке.</returns>
-        private string GetRangeErrorString(double min, double max, string propertyName)
+        private static string GetRangeErrorString(double min, double max, string propertyName)
         {
             return $"{propertyName} must be between {min} and {max} mm.";
         }
@@ -300,6 +294,51 @@ namespace PartsBox.Models
                 {
                     yield return $"{nameof(CellsInLength)} incorrect ";
                 }
+            }
+        }
+
+        #endregion
+
+        #region EqualsOverride
+
+        ///<inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is PartsBoxParameters toCompareWith))
+            {
+                return false;
+            }
+
+            return Equals(toCompareWith);
+        }
+
+        /// <summary>
+        /// Проверка равенства двух объектов <see cref="PartsBoxParameters"/>
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        protected bool Equals(PartsBoxParameters other)
+        {
+            return _width.Equals(other._width) && _lenght.Equals(other._lenght) && _height.Equals(other._height) &&
+                   _outerWallWidth.Equals(other._outerWallWidth) && _innerWallWidth.Equals(other._innerWallWidth) &&
+                   _boxBottomWidth.Equals(other._boxBottomWidth) && _cellsInWidth == other._cellsInWidth &&
+                   _cellsInLength == other._cellsInLength;
+        }
+
+        ///<inheritdoc/>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = _width.GetHashCode();
+                hashCode = (hashCode * 397) ^ _lenght.GetHashCode();
+                hashCode = (hashCode * 397) ^ _height.GetHashCode();
+                hashCode = (hashCode * 397) ^ _outerWallWidth.GetHashCode();
+                hashCode = (hashCode * 397) ^ _innerWallWidth.GetHashCode();
+                hashCode = (hashCode * 397) ^ _boxBottomWidth.GetHashCode();
+                hashCode = (hashCode * 397) ^ _cellsInWidth;
+                hashCode = (hashCode * 397) ^ _cellsInLength;
+                return hashCode;
             }
         }
 
