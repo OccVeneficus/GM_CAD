@@ -319,10 +319,14 @@ namespace PartsBox.Models
         /// <returns></returns>
         protected bool Equals(PartsBoxParameters other)
         {
-            return _width.Equals(other._width) && _lenght.Equals(other._lenght) && _height.Equals(other._height) &&
-                   _outerWallWidth.Equals(other._outerWallWidth) && _innerWallWidth.Equals(other._innerWallWidth) &&
-                   _boxBottomWidth.Equals(other._boxBottomWidth) && _cellsInWidth == other._cellsInWidth &&
-                   _cellsInLength == other._cellsInLength;
+            return _width.Equals(other._width) 
+                   && _lenght.Equals(other._lenght) 
+                   && _height.Equals(other._height) 
+                   && _outerWallWidth.Equals(other._outerWallWidth) 
+                   && _innerWallWidth.Equals(other._innerWallWidth) 
+                   && _boxBottomWidth.Equals(other._boxBottomWidth) 
+                   && _cellsInWidth == other._cellsInWidth 
+                   && _cellsInLength == other._cellsInLength;
         }
 
         ///<inheritdoc/>

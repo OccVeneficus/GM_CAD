@@ -128,6 +128,7 @@ namespace InvAddIn
         {
             var extrudeDef = _partDefinition.Features.ExtrudeFeatures.CreateExtrudeDefinition(_currentSketch.Profiles.AddForSolid(),
                 operationType);
+            //TODO: To const
             extrudeDef.SetDistanceExtent(distance / 10.0, extrudeDirection);
             _partDefinition.Features.ExtrudeFeatures.Add(extrudeDef);
         }

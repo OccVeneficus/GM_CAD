@@ -40,6 +40,7 @@ namespace PartsBox.Models
         /// <returns>True если число ячеек позволяет их построить с соблюдением условия минимальной ширины одной ячейки.</returns>
         public static bool ValidateCellsNumber(double dimensionSize, double innerWallWidth, double outerWallWidth, int userValue)
         {
+            //TODO: дублирование
             var cellsCombinedWidth = dimensionSize - 2 * outerWallWidth - (userValue - 1) * innerWallWidth;
             var oneCellWidth= cellsCombinedWidth / userValue;
             return oneCellWidth > _minCellWidht;
