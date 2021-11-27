@@ -1,12 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PartsBox.ViewModels
 {
@@ -32,12 +29,7 @@ namespace PartsBox.ViewModels
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
         /// <inheritdoc/>
-        public virtual IEnumerable GetErrors([CallerMemberName] string propertyName = null) => Enumerable.Empty<object>();
-
-        /// <inheritdoc/>
-        protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            RaisePropertyChanged(nameof(sender), e);
-        }
+        public virtual IEnumerable GetErrors([CallerMemberName] string propertyName = null) =>
+            Enumerable.Empty<object>();
     }
 }

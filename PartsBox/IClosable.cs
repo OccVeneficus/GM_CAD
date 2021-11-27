@@ -10,6 +10,9 @@
         /// </summary>
         void Close();
 
+        /// <summary>
+        /// Свойство хранит результат диалога.
+        /// </summary>
         bool? DialogResult { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Минимальный размер одной ячейки в мм.
         /// </summary>
-        private const double _minCellWidht = 10.0;
+        private const double MinCellWidht = 10.0;
 
         /// <summary>
         /// Проверяет, входит ли значение в указанный диапазон (включительно).
@@ -43,7 +43,7 @@ namespace PartsBox.Models
             //TODO: дублирование
             var cellsCombinedWidth = dimensionSize - 2 * outerWallWidth - (userValue - 1) * innerWallWidth;
             var oneCellWidth= cellsCombinedWidth / userValue;
-            return oneCellWidth > _minCellWidht;
+            return oneCellWidth > MinCellWidht;
         }
     }
 }
