@@ -236,6 +236,11 @@ namespace PartsBox.Models
             return $"{propertyName} must be between {min} and {max} mm.";
         }
 
+        /// <summary>
+        /// Получить ошибки свойств с атрибутом Range.
+        /// </summary>
+        /// <param name="property">Свойство, ошибки которого нужно получить.</param>
+        /// <returns>Ошибки валидации указанного свойства.</returns>
         private IEnumerable GetRangeErrors(PropertyInfo property)
         {
             AttributeCollection attributes =
@@ -246,18 +251,32 @@ namespace PartsBox.Models
             {
                 var min = (double)attribute.Minimum;
                 var max = (double)attribute.Maximum;
-                foreach (var value in GetDimensionsError(min, max, (double)property.GetValue(this), property.Name))
+                foreach (var value in GetDimensionsError(min, max,
+                    (double)property.GetValue(this), property.Name))
                 {
                     yield return value;
                 }
             }
         }
 
+        /// <summary>
+        /// Получить ошибки для полей с количеством ячеек в длине/ширине.
+        /// </summary>
+        /// <param name="property">Свойство количества ячеек в длине/ширине.</param>
+        /// <returns>Ошибки свойства количества ячеек в длине/ширине.</returns>
+        private IEnumerable GetCellsNumberErrors(PropertyInfo property)
+        {
+            var dimensionValue = property.Name == nameof(CellsInWidth) ? Width : Length;
+            if (!Validator.ValidateCellsNumber(CalculateOneCellSize, dimensionValue,
+                InnerWallWidth, OuterWallWidth, (int)property.GetValue(this)))
+            {
+                yield return $"{property.Name} incorrect ";
+            }
+        }
+
         /// <inheritdoc/>
         public override IEnumerable GetErrors(string propertyName = null)
         {
-            // Дальше поделить не получается. Метод при не указанном propertyName
-            // должен проверить все свойства на ошибки
             foreach (var obj in base.GetErrors(propertyName))
             {
                 yield return obj;
@@ -265,41 +284,23 @@ namespace PartsBox.Models
 
             var properties = GetType().GetProperties();
 
-            if (string.IsNullOrEmpty(propertyName))
+            if (!string.IsNullOrEmpty(propertyName))
             {
-                foreach (var property in properties)
+                properties = properties.Where(x => x.Name == propertyName).ToArray();
+            }
+
+            foreach (var property in properties)
+            {
+                if (property.Name == nameof(CellsInLength) || property.Name == nameof(CellsInWidth))
                 {
-                    if (propertyName != nameof(CellsInLength) && propertyName != nameof(CellsInWidth))
+                    foreach (var rangeError in GetCellsNumberErrors(property))
                     {
-                        foreach (var rangeError in GetRangeErrors(property))
-                        {
-                            yield return rangeError;
-                        }
+                        yield return rangeError;
                     }
                 }
-            }
-            else if (propertyName != nameof(CellsInLength) && propertyName != nameof(CellsInWidth))
-            {
-                var property = properties.First(x => x.Name == propertyName);
                 foreach (var rangeError in GetRangeErrors(property))
                 {
                     yield return rangeError;
-                }
-            }
-
-            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(CellsInWidth))
-            {
-                if (!Validator.ValidateCellsNumber(CalculateOneCellSize,Width, InnerWallWidth, OuterWallWidth, CellsInWidth))
-                {
-                    yield return $"{nameof(CellsInWidth)} incorrect ";
-                }
-            }
-
-            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(CellsInLength))
-            {
-                if (!Validator.ValidateCellsNumber(CalculateOneCellSize, Length, InnerWallWidth, OuterWallWidth, CellsInLength))
-                {
-                    yield return $"{nameof(CellsInLength)} incorrect ";
                 }
             }
         }
