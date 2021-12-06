@@ -34,13 +34,16 @@ namespace PartsBox.Models
         /// <summary>
         /// Проверяет минимальный размер одной ячейки при текущих параметрах.
         /// </summary>
-        /// <param name="oneCellSizeCalculationFunc">Функция расчета размера длины или ширины одной ячейки.</param>
+        /// <param name="oneCellSizeCalculationFunc">Функция расчета размера длины или
+        /// ширины одной ячейки.</param>
         /// <param name="dimensionSize">Длина или ширина коробки.</param>
         /// <param name="innerWallWidth">Ширина внутренних стенок.</param>
         /// <param name="outerWallWidth">Ширина внешних стенок.</param>
         /// <param name="userValue">Пользовательское значение.</param>
-        /// <returns>True если число ячеек позволяет их построить с соблюдением условия минимальной ширины одной ячейки.</returns>
-        public static bool ValidateCellsNumber(Func<double, double, double, int, double> oneCellSizeCalculationFunc,
+        /// <returns>True если число ячеек позволяет их построить с соблюдением условия
+        /// минимальной ширины одной ячейки.</returns>
+        public static bool ValidateCellsNumber(
+            Func<double, double, double, int, double> oneCellSizeCalculationFunc,
             double dimensionSize, double innerWallWidth, double outerWallWidth, int userValue)
         {
             //TODO: дублирование

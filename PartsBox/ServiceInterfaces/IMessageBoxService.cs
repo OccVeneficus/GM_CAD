@@ -13,6 +13,7 @@
         /// <param name="button">Тип кнопок.</param>
         /// <param name="icon">Тип картинки.</param>
         /// <returns>Результат диалога с пользователем.</returns>
-        bool Show(string messageBoxText, string caption, MessageButtons button, MessageIcon icon);
+        bool Show(string messageBoxText, string caption,
+            MessageButtons button, MessageIcon icon);
     }
 }

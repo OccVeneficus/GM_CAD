@@ -35,8 +35,9 @@ namespace PartsBoxTests
             var partsBoxParameters = BoxParameters;
 
             // Act
-            var actual = Validator.ValidateCellsNumber(BoxParameters.CalculateOneCellSize,partsBoxParameters.Length,
-                partsBoxParameters.InnerWallWidth, partsBoxParameters.OuterWallWidth, userValue);
+            var actual = Validator.ValidateCellsNumber(BoxParameters.CalculateOneCellSize,
+                partsBoxParameters.Length, partsBoxParameters.InnerWallWidth,
+                partsBoxParameters.OuterWallWidth, userValue);
 
             // Assert
             Assert.AreEqual(expected, actual, "Валидация проведена неверно.");
