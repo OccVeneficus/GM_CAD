@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -65,6 +66,8 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к ширине коробки.
         /// </summary>
+        ///
+        [Range(150.0,700.0)]
         [DefaultValue(150.0)]
         public double Width
         {
@@ -75,6 +78,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к длине коробки.
         /// </summary>
+        [Range(150.0,700.0)]
         [DefaultValue(150.0)]
         public double Length
         {
@@ -85,6 +89,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к высоте коробки.
         /// </summary>
+        [Range(50.0, 150.0)]
         [DefaultValue(50.0)]
         public double Height
         {
@@ -95,6 +100,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к ширине внешних стенок.
         /// </summary>
+        [Range(5.0, 10.0)]
         [DefaultValue(5.0)]
         public double OuterWallWidth
         {
@@ -105,6 +111,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к ширине внутренних стенок.
         /// </summary>
+        [Range(2.0, 5.0)]
         [DefaultValue(2.0)]
         public double InnerWallWidth
         {
@@ -115,6 +122,7 @@ namespace PartsBox.Models
         /// <summary>
         /// Свойство для доступа к толщине днища коробки.
         /// </summary>
+        [Range(5.0, 10.0)]
         [DefaultValue(5.0)]
         public double BoxBottomWidth
         {
@@ -145,30 +153,35 @@ namespace PartsBox.Models
         /// <summary>
         /// Рассчитать ширину одной ячейки.
         /// </summary>
-        public double GetOneCellWidth
-        {
-            get
-            {
-                var cellsCombinedWidth = Width - 2 * OuterWallWidth - (CellsInWidth - 1) * InnerWallWidth;
-                return cellsCombinedWidth / CellsInWidth;
-            }
-        }
+        public double GetOneCellWidth => CalculateOneCellSize(Width, OuterWallWidth,
+            InnerWallWidth, CellsInWidth);
 
         /// <summary>
         /// Рассчитать длину одной ячейки.
         /// </summary>
-        public double GetOneCellLength
-        {
-            get
-            {
-                var cellsCombinedWidth = Length - 2 * OuterWallWidth - (CellsInLength - 1) * InnerWallWidth;
-                return cellsCombinedWidth / CellsInLength;
-            }
-        }
+        public double GetOneCellLength => CalculateOneCellSize(Length, OuterWallWidth,
+            InnerWallWidth, CellsInLength);
 
         #endregion
 
         #region PublicMethods
+
+        /// <summary>
+        /// Метод расчета длины или ширины одной ячейки.
+        /// </summary>
+        /// <param name="dimensionSize">Длина или ширина.</param>
+        /// <param name="outerWallWidth">Длина внешней стенки.</param>
+        /// <param name="innerWallWidth">Длина внутренней стенки.</param>
+        /// <param name="cellsInDimension">Ячеек в длине или ширине.</param>
+        /// <returns>Длина или ширина одной ячейки.</returns>
+        public double CalculateOneCellSize(double dimensionSize,
+            double outerWallWidth, 
+            double innerWallWidth, int cellsInDimension)
+        {
+            var cellsCombinedWidth = dimensionSize - 2 *
+                outerWallWidth - (cellsInDimension - 1) * innerWallWidth;
+            return cellsCombinedWidth / cellsInDimension;
+        }
 
         /// <summary>
         /// Устанавливает стандартные (минимальные) значения параметрам ящика.
@@ -202,7 +215,8 @@ namespace PartsBox.Models
         /// <param name="value">Значение.</param>
         /// <param name="propertyName">Имя свойства.</param>
         /// <returns>Список ошибок.</returns>
-        private IEnumerable GetDimensionsError(double min, double max, double value, string propertyName)
+        private static IEnumerable GetDimensionsError(double min, double max,
+            double value, string propertyName)
         {
             if(!Validator.ValidateRange(min, max, value))
             {
@@ -222,8 +236,25 @@ namespace PartsBox.Models
             return $"{propertyName} must be between {min} and {max} mm.";
         }
 
+        private IEnumerable GetRangeErrors(PropertyInfo property)
+        {
+            AttributeCollection attributes =
+                TypeDescriptor.GetProperties(this)[property.Name].Attributes;
+            RangeAttribute attribute =
+                (RangeAttribute)attributes[typeof(RangeAttribute)];
+            if (attribute?.Minimum != null)
+            {
+                var min = (double)attribute.Minimum;
+                var max = (double)attribute.Maximum;
+                foreach (var value in GetDimensionsError(min, max, (double)property.GetValue(this), property.Name))
+                {
+                    yield return value;
+                }
+            }
+        }
+
         /// <inheritdoc/>
-        public override IEnumerable GetErrors(string propertyName)
+        public override IEnumerable GetErrors(string propertyName = null)
         {
             // Дальше поделить не получается. Метод при не указанном propertyName
             // должен проверить все свойства на ошибки
@@ -232,57 +263,33 @@ namespace PartsBox.Models
                 yield return obj;
             }
 
-            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(Width))
+            var properties = GetType().GetProperties();
+
+            if (string.IsNullOrEmpty(propertyName))
             {
-                foreach(var value in GetDimensionsError(150.0, 700.0, Width, nameof(Width))) 
+                foreach (var property in properties)
                 {
-                    yield return value;
+                    if (propertyName != nameof(CellsInLength) && propertyName != nameof(CellsInWidth))
+                    {
+                        foreach (var rangeError in GetRangeErrors(property))
+                        {
+                            yield return rangeError;
+                        }
+                    }
                 }
             }
-
-            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(Length))
+            else if (propertyName != nameof(CellsInLength) && propertyName != nameof(CellsInWidth))
             {
-                foreach (var value in GetDimensionsError(150.0, 700.0, Length, nameof(Length)))
+                var property = properties.First(x => x.Name == propertyName);
+                foreach (var rangeError in GetRangeErrors(property))
                 {
-                    yield return value;
-                }
-            }
-
-            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(Height))
-            {
-                foreach (var value in GetDimensionsError(50.0, 150.0, Height, nameof(Height)))
-                {
-                    yield return value;
-                }
-            }
-
-            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(OuterWallWidth))
-            {
-                foreach (var value in GetDimensionsError(5.0, 10.0, OuterWallWidth, nameof(OuterWallWidth)))
-                {
-                    yield return value;
-                }
-            }
-
-            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(InnerWallWidth))
-            {
-                foreach (var value in GetDimensionsError(2.0, 5.0, InnerWallWidth, nameof(InnerWallWidth)))
-                {
-                    yield return value;
-                }
-            }
-
-            if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(BoxBottomWidth))
-            {
-                foreach (var value in GetDimensionsError(5.0, 10.0, BoxBottomWidth, nameof(BoxBottomWidth)))
-                {
-                    yield return value;
+                    yield return rangeError;
                 }
             }
 
             if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(CellsInWidth))
             {
-                if (!Validator.ValidateCellsNumber(Width, InnerWallWidth, OuterWallWidth, CellsInWidth))
+                if (!Validator.ValidateCellsNumber(CalculateOneCellSize,Width, InnerWallWidth, OuterWallWidth, CellsInWidth))
                 {
                     yield return $"{nameof(CellsInWidth)} incorrect ";
                 }
@@ -290,7 +297,7 @@ namespace PartsBox.Models
 
             if (string.IsNullOrEmpty(propertyName) || propertyName == nameof(CellsInLength))
             {
-                if (!Validator.ValidateCellsNumber(Length, InnerWallWidth, OuterWallWidth, CellsInLength))
+                if (!Validator.ValidateCellsNumber(CalculateOneCellSize, Length, InnerWallWidth, OuterWallWidth, CellsInLength))
                 {
                     yield return $"{nameof(CellsInLength)} incorrect ";
                 }

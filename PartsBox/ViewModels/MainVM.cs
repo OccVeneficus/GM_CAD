@@ -55,7 +55,8 @@ namespace PartsBox.ViewModels
                 return _setDefaultCommand ??
                     ( _setDefaultCommand = new RelayCommand(() =>
                         {
-                            if(_messageBoxService.Show("Set all values to default?", "Set default values",
+                            if(_messageBoxService.Show("Set all values to default?",
+                                "Set default values",
                                 MessageButtons.OkCancel, MessageIcon.Warning))
                             {
                                 _currentPartsBoxParameters.SetDefaultValues();
