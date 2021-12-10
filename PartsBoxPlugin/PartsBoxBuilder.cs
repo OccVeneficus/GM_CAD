@@ -48,19 +48,8 @@ namespace InvAddIn
         /// </summary>
         private ProgressBar progressBar;
 
-        /// <summary>
-        /// Миллиметров в сантиметре, поле для перевода миллиметров в сантиметры.
-        /// </summary>
-        private const double MmInCm = 10.0;
-
-        /// <summary>
-        /// Текущий уникальный индекс.
-        /// </summary>
         private int _index = 0;
 
-        /// <summary>
-        /// Получить уникальный индекс.
-        /// </summary>
         public int Index 
         {
             get
@@ -105,8 +94,7 @@ namespace InvAddIn
             var rightCornerY = 0 - halfWidth;
             DrawRectangle(leftCornerX, leftCornerY, rightCornerX, rightCornerY);
 
-            Extrude(_partsBoxParameters.BoxBottomWidth + _partsBoxParameters.Height,
-                PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
+            Extrude(_partsBoxParameters.BoxBottomWidth + _partsBoxParameters.Height, PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
         }
 
         /// <summary>
@@ -126,9 +114,7 @@ namespace InvAddIn
             progressBar.UpdateProgress();
             DrawRectangularMatrix(leftCornerX, leftCornerY);
 
-            Extrude(_partsBoxParameters.Height - _partsBoxParameters.BoxBottomWidth,
-                PartFeatureExtentDirectionEnum.kNegativeExtentDirection,
-                PartFeatureOperationEnum.kCutOperation);
+            Extrude(_partsBoxParameters.Height - _partsBoxParameters.BoxBottomWidth, PartFeatureExtentDirectionEnum.kNegativeExtentDirection, PartFeatureOperationEnum.kCutOperation);
         }
 
         /// <summary>
@@ -138,14 +124,12 @@ namespace InvAddIn
         /// <param name="extrudeDirection">Направление выдавливания.</param>
         /// <param name="operationType">Тип операции.</param>
         public void Extrude(double distance, PartFeatureExtentDirectionEnum extrudeDirection =
-            PartFeatureExtentDirectionEnum.kPositiveExtentDirection,
-            PartFeatureOperationEnum operationType = PartFeatureOperationEnum.kJoinOperation)
+            PartFeatureExtentDirectionEnum.kPositiveExtentDirection, PartFeatureOperationEnum operationType = PartFeatureOperationEnum.kJoinOperation)
         {
-            var extrudeDef = 
-                _partDefinition.Features.ExtrudeFeatures.CreateExtrudeDefinition(
-                    _currentSketch.Profiles.AddForSolid(), operationType);
+            var extrudeDef = _partDefinition.Features.ExtrudeFeatures.CreateExtrudeDefinition(_currentSketch.Profiles.AddForSolid(),
+                operationType);
             //TODO: To const
-            extrudeDef.SetDistanceExtent(distance / MmInCm, extrudeDirection);
+            extrudeDef.SetDistanceExtent(distance / 10.0, extrudeDirection);
             _partDefinition.Features.ExtrudeFeatures.Add(extrudeDef);
         }
 
@@ -156,13 +140,12 @@ namespace InvAddIn
         /// <param name="pointOneY">Y координата верхнего угла.</param>
         /// <param name="pointTwoX">X координата нижнего угла.</param>
         /// <param name="pointTwoY">Y координата нижнего угла.</param>
-        public void DrawRectangle(double pointOneX, double pointOneY, double pointTwoX,
-            double pointTwoY)
+        public void DrawRectangle(double pointOneX, double pointOneY, double pointTwoX, double pointTwoY)
         {
-            pointOneX /= MmInCm;
-            pointOneY /= MmInCm;
-            pointTwoX /= MmInCm;
-            pointTwoY /= MmInCm;
+            pointOneX /= 10.0;
+            pointOneY /= 10.0;
+            pointTwoX /= 10.0;
+            pointTwoY /= 10.0;
             var cornerPointOne = _transGeometry.CreatePoint2d(pointOneX, pointOneY);
             var cornerPointTwo = _transGeometry.CreatePoint2d(pointTwoX, pointTwoY);
             _currentSketch.SketchLines.AddAsTwoPointRectangle(cornerPointOne, cornerPointTwo);
@@ -175,22 +158,18 @@ namespace InvAddIn
         /// <param name="startPointY">Y координата начала.</param>
         private void DrawRectangularMatrix(double startPointX, double startPointY)
         {
-            for(var cellsInLength = 0; cellsInLength < _partsBoxParameters.CellsInLength;
-                cellsInLength++)
+            for(var cellsInLength = 0; cellsInLength < _partsBoxParameters.CellsInLength; cellsInLength++)
             {
                 var firstStartPointY = startPointY;
-                for (var cellsInWidth = 0; cellsInWidth < _partsBoxParameters.CellsInWidth;
-                    cellsInWidth++)
+                for (var cellsInWidth = 0; cellsInWidth < _partsBoxParameters.CellsInWidth; cellsInWidth++)
                 {
                     var endPointX = startPointX + _partsBoxParameters.GetOneCellLength;
                     var endPointY = startPointY - _partsBoxParameters.GetOneCellWidth;
                     DrawRectangle(startPointX, startPointY, endPointX, endPointY);
-                    startPointY -= _partsBoxParameters.GetOneCellWidth +
-                                   _partsBoxParameters.InnerWallWidth;
+                    startPointY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
                 }
                 startPointY = firstStartPointY;
-                startPointX += _partsBoxParameters.GetOneCellLength +
-                               _partsBoxParameters.InnerWallWidth;
+                startPointX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
             }
         }
 
