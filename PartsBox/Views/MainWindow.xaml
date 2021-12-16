@@ -5,12 +5,13 @@
     xmlns:converters="clr-namespace:PartsBox.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:PartsBox.Views"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    Title="Parts Box Wizard"
-    Width="580"
-    Height="440"
-    ResizeMode="NoResize"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     Name="Window"
+    Title="Parts Box Wizard"
+    Width="700"
+    Height="640"
+    ResizeMode="NoResize"
     mc:Ignorable="d">
     <Window.Resources>
         <Image x:Key="DecorImage" Source="../Resources/DecorImage.png"/>
@@ -47,6 +48,7 @@
             </Style.Triggers>
         </Style>
         <converters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+        <converters:ColorToBooleanConverter x:Key="ColorToBooleanConverter"/>
     </Window.Resources>
     <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -55,6 +57,7 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -114,8 +117,8 @@
                     FontSize="18"
                     Text="Length (mm):"/>
                 <TextBox
-                    Grid.Row="1"
                     x:Name="LengthTextBox"
+                    Grid.Row="1"
                     Grid.Column="1"
                     Width="100"
                     Margin="5 5 5 5"
@@ -152,8 +155,8 @@
                     FontSize="18"
                     Text="Outer wall width (mm):"/>
                 <TextBox
-                    Grid.Row="3"
                     x:Name="OuterWallWidthTextBox"
+                    Grid.Row="3"
                     Grid.Column="1"
                     Width="100"
                     Margin="5 5 5 5"
@@ -171,8 +174,8 @@
                     FontSize="18"
                     Text="Inner wall width (mm):"/>
                 <TextBox
-                    Grid.Row="4"
                     x:Name="InnerWallWidthTextBox"
+                    Grid.Row="4"
                     Grid.Column="1"
                     Width="100"
                     Margin="5 5 5 5"
@@ -190,8 +193,8 @@
                     FontSize="18"
                     Text="Box bottom width (mm):"/>
                 <TextBox
-                    Grid.Row="5"
                     x:Name="BoxBottomWidthTextBox"
+                    Grid.Row="5"
                     Grid.Column="1"
                     Width="100"
                     Margin="5 5 5 5"
@@ -209,8 +212,8 @@
                     FontSize="18"
                     Text="Cells in length :"/>
                 <TextBox
-                    Grid.Row="6"
                     x:Name="CellsInLengthTextBox"
+                    Grid.Row="6"
                     Grid.Column="1"
                     Width="100"
                     Margin="5 5 5 5"
@@ -228,8 +231,8 @@
                     FontSize="18"
                     Text="Cells in width:"/>
                 <TextBox
-                    Grid.Row="7"
                     x:Name="CellsInWidthTextBox"
+                    Grid.Row="7"
                     Grid.Column="1"
                     Width="100"
                     Margin="5 5 5 5"
@@ -239,8 +242,37 @@
                     Style="{StaticResource ErrorTextBoxStyle}"
                     Text="{Binding CurrentPartsBoxParametes.CellsInWidth, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
-            <StackPanel
+            <ItemsControl
                 Grid.Row="2"
+                Height="200"
+                MaxHeight="200"
+                ItemsSource="{Binding CurrentPartsBoxParametes.Cells}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid
+                            MaxWidth="200"
+                            MaxHeight="200"
+                            Columns="{Binding CurrentPartsBoxParametes.CellsInLength}"
+                            Rows="{Binding CurrentPartsBoxParametes.CellsInWidth}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Background="{Binding IsMerge, Converter={StaticResource ColorToBooleanConverter}}"
+                            BorderBrush="Black"
+                            BorderThickness="5">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDown" >
+                                    <i:InvokeCommandAction Command="{Binding ChangeMergeStatusCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <StackPanel
+                Grid.Row="3"
                 Margin="0 5 0 0"
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
@@ -248,16 +280,16 @@
                     Width="100"
                     Height="30"
                     Margin="5 5 5 5"
+                    Command="{Binding BuildCommand}"
+                    CommandParameter="{Binding ElementName=Window}"
                     Content="Build"
                     FontSize="18"
-                    Style="{StaticResource ButtonStyle}"
-                    Command="{Binding BuildCommand}"
-                    CommandParameter="{Binding ElementName=Window}"/>
+                    Style="{StaticResource ButtonStyle}"/>
                 <Button
                     Width="100"
                     Height="30"
-                    Command="{Binding SetDefaultCommand}"
                     Margin="5 5 5 5"
+                    Command="{Binding SetDefaultCommand}"
                     Content="Set Default"
                     FontSize="18"/>
             </StackPanel>

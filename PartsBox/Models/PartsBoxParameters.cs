@@ -3,6 +3,7 @@ using PartsBox.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -137,7 +138,19 @@ namespace PartsBox.Models
         public int CellsInWidth
         {
             get => _cellsInWidth;
-            set => Set(ref _cellsInWidth, value);
+            set
+            {
+                Set(ref _cellsInWidth, value);
+                _cellsArray = new CellInfo[_cellsInWidth, _cellsInLength];
+                Cells.Clear();
+                for (var lengthIndex = 0; lengthIndex < CellsInLength; lengthIndex++)
+                {
+                    for (var widthIndex = 0; widthIndex < CellsInWidth; widthIndex++)
+                    {
+                        Cells.Add(new CellInfo { IsMerge = false, Index = (lengthIndex, widthIndex) });
+                    }
+                }
+            } 
         }
 
         /// <summary>
@@ -147,8 +160,22 @@ namespace PartsBox.Models
         public int CellsInLength
         {
             get => _cellsInLength;
-            set => Set(ref _cellsInLength, value);
+            set
+            {
+                Set(ref _cellsInLength, value);
+                _cellsArray = new CellInfo[_cellsInWidth, _cellsInLength];
+                Cells.Clear();
+                for (var lengthIndex = 0; lengthIndex < CellsInLength; lengthIndex++)
+                {
+                    for (var widthIndex = 0; widthIndex < CellsInWidth; widthIndex++)
+                    {
+                        Cells.Add(new CellInfo { IsMerge = false, Index = (lengthIndex, widthIndex) });
+                    }
+                }
+            }
         }
+
+        private CellInfo[,] _cellsArray;
 
         /// <summary>
         /// Рассчитать ширину одной ячейки.
@@ -181,6 +208,14 @@ namespace PartsBox.Models
             var cellsCombinedWidth = dimensionSize - 2 *
                 outerWallWidth - (cellsInDimension - 1) * innerWallWidth;
             return cellsCombinedWidth / cellsInDimension;
+        }
+
+        private  ObservableCollection<CellInfo> _cells = new ObservableCollection<CellInfo>();
+
+        public ObservableCollection<CellInfo> Cells
+        {
+            get => _cells;
+            set => Set(ref _cells, value);
         }
 
         /// <summary>
