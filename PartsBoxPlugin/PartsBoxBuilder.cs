@@ -49,8 +49,19 @@ namespace InvAddIn
         /// </summary>
         private ProgressBar _progressBar;
 
+        /// <summary>
+        /// Поле для индекса скетчей.
+        /// </summary>
         private int _index = 0;
 
+        /// <summary>
+        /// Миллиметров в сантиметрах. Константа для перевода значений.
+        /// </summary>
+        private const double MmInCm = 10.0;
+
+        /// <summary>
+        /// Свойство индекса скетчей.
+        /// </summary>
         public int Index 
         {
             get
@@ -95,7 +106,8 @@ namespace InvAddIn
             var rightCornerY = 0 - halfWidth;
             DrawRectangle(leftCornerX, leftCornerY, rightCornerX, rightCornerY);
 
-            Extrude(_partsBoxParameters.BoxBottomWidth + _partsBoxParameters.Height, PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
+            Extrude(_partsBoxParameters.BoxBottomWidth + _partsBoxParameters.Height,
+                PartFeatureExtentDirectionEnum.kNegativeExtentDirection);
         }
 
         /// <summary>
@@ -115,7 +127,8 @@ namespace InvAddIn
             _progressBar.UpdateProgress();
             DrawRectangularMatrix(leftCornerX, leftCornerY);
 
-            Extrude(_partsBoxParameters.Height - _partsBoxParameters.BoxBottomWidth, PartFeatureExtentDirectionEnum.kNegativeExtentDirection, PartFeatureOperationEnum.kCutOperation);
+            Extrude(_partsBoxParameters.Height - _partsBoxParameters.BoxBottomWidth,
+                PartFeatureExtentDirectionEnum.kNegativeExtentDirection, PartFeatureOperationEnum.kCutOperation);
 
             CreateSketch(2, "Merge");
 
@@ -131,8 +144,10 @@ namespace InvAddIn
         {
             foreach (var cellInfo in _partsBoxParameters.Cells.Where(x=>x.IsMerge || x.HasNeighbor))
             {
-                var startX = (_partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth) * cellInfo.Index.Item1;
-                var startY = (_partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth) * cellInfo.Index.Item2;
+                var startX = (_partsBoxParameters.GetOneCellLength +
+                              _partsBoxParameters.InnerWallWidth) * cellInfo.Index.Item1;
+                var startY = (_partsBoxParameters.GetOneCellWidth +
+                              _partsBoxParameters.InnerWallWidth) * cellInfo.Index.Item2;
                 startX = startPointX + startX;
                 startY = startPointY - startY;
                 var endX = startX + _partsBoxParameters.GetOneCellLength;
@@ -140,7 +155,8 @@ namespace InvAddIn
                 
                 DrawMergedSketch(cellInfo, endX, endY, startX, startY);
             }
-            Extrude(_partsBoxParameters.Height - _partsBoxParameters.BoxBottomWidth, PartFeatureExtentDirectionEnum.kNegativeExtentDirection, PartFeatureOperationEnum.kCutOperation);
+            Extrude(_partsBoxParameters.Height - _partsBoxParameters.BoxBottomWidth,
+                PartFeatureExtentDirectionEnum.kNegativeExtentDirection, PartFeatureOperationEnum.kCutOperation);
         }
 
         /// <summary>
@@ -224,12 +240,13 @@ namespace InvAddIn
         /// <param name="extrudeDirection">Направление выдавливания.</param>
         /// <param name="operationType">Тип операции.</param>
         public void Extrude(double distance, PartFeatureExtentDirectionEnum extrudeDirection =
-            PartFeatureExtentDirectionEnum.kPositiveExtentDirection, PartFeatureOperationEnum operationType = PartFeatureOperationEnum.kJoinOperation)
+            PartFeatureExtentDirectionEnum.kPositiveExtentDirection,
+            PartFeatureOperationEnum operationType = PartFeatureOperationEnum.kJoinOperation)
         {
-            var extrudeDef = _partDefinition.Features.ExtrudeFeatures.CreateExtrudeDefinition(_currentSketch.Profiles.AddForSolid(),
-                operationType);
-            //TODO: To const
-            extrudeDef.SetDistanceExtent(distance / 10.0, extrudeDirection);
+            var extrudeDef =
+                _partDefinition.Features.ExtrudeFeatures.CreateExtrudeDefinition(
+                    _currentSketch.Profiles.AddForSolid(), operationType);
+            extrudeDef.SetDistanceExtent(distance / MmInCm, extrudeDirection);
             _partDefinition.Features.ExtrudeFeatures.Add(extrudeDef);
         }
 
@@ -242,10 +259,10 @@ namespace InvAddIn
         /// <param name="pointTwoY">Y координата нижнего угла.</param>
         public void DrawRectangle(double pointOneX, double pointOneY, double pointTwoX, double pointTwoY)
         {
-            pointOneX /= 10.0;
-            pointOneY /= 10.0;
-            pointTwoX /= 10.0;
-            pointTwoY /= 10.0;
+            pointOneX /= MmInCm;
+            pointOneY /= MmInCm;
+            pointTwoX /= MmInCm;
+            pointTwoY /= MmInCm;
             var cornerPointOne = _transGeometry.CreatePoint2d(pointOneX, pointOneY);
             var cornerPointTwo = _transGeometry.CreatePoint2d(pointTwoX, pointTwoY);
             _currentSketch.SketchLines.AddAsTwoPointRectangle(cornerPointOne, cornerPointTwo);
