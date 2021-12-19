@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace InvAddIn
@@ -46,7 +47,7 @@ namespace InvAddIn
         /// <summary>
         /// Полоска прогресса построения модели.
         /// </summary>
-        private ProgressBar progressBar;
+        private ProgressBar _progressBar;
 
         private int _index = 0;
 
@@ -67,16 +68,16 @@ namespace InvAddIn
         {
             _partsBoxParameters = partsBoxParameters;
             _partDocument = Application.ActiveDocument as PartDocument;
-            progressBar = Application.CreateProgressBar(false, 4, "Building parts box.");
+            _progressBar = Application.CreateProgressBar(false, 4, "Building parts box.");
             _partDefinition = _partDocument.ComponentDefinition;
             _transGeometry = Application.TransientGeometry;
-            progressBar.Message = @"Building box block";
-            progressBar.UpdateProgress();
+            _progressBar.Message = @"Building box block";
+            _progressBar.UpdateProgress();
             BuildBoxBlock();
-            progressBar.Message = @"Building box cells";
-            progressBar.UpdateProgress();
+            _progressBar.Message = @"Building box cells";
+            _progressBar.UpdateProgress();
             BuildBoxCells();
-            progressBar.Close();
+            _progressBar.Close();
         }
 
         /// <summary>
@@ -110,11 +111,94 @@ namespace InvAddIn
             leftCornerX += _partsBoxParameters.OuterWallWidth;
             leftCornerY -= _partsBoxParameters.OuterWallWidth;
 
-            progressBar.Message = @"Drawing box cells";
-            progressBar.UpdateProgress();
+            _progressBar.Message = @"Drawing box cells";
+            _progressBar.UpdateProgress();
             DrawRectangularMatrix(leftCornerX, leftCornerY);
 
             Extrude(_partsBoxParameters.Height - _partsBoxParameters.BoxBottomWidth, PartFeatureExtentDirectionEnum.kNegativeExtentDirection, PartFeatureOperationEnum.kCutOperation);
+
+            CreateSketch(2, "Merge");
+
+            MergeCells(leftCornerX,leftCornerY);
+        }
+
+        /// <summary>
+        /// Функция слияния ячеек.
+        /// </summary>
+        /// <param name="startPointX">Начальная точка по X.</param>
+        /// <param name="startPointY">Начальная точка по Y.</param>
+        private void MergeCells(double startPointX, double startPointY)
+        {
+            foreach (var cellInfo in _partsBoxParameters.Cells.Where(x=>x.IsMerge || x.HasNeighbor))
+            {
+                var startX = (_partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth) * cellInfo.Index.Item1;
+                var startY = (_partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth) * cellInfo.Index.Item2;
+                startX = startPointX + startX;
+                startY = startPointY - startY;
+                var endX = startX + _partsBoxParameters.GetOneCellLength;
+                var endY = startY - _partsBoxParameters.GetOneCellWidth;
+                var neighbors = GetNeighbors(cellInfo);
+
+                if (neighbors[0] != null && neighbors[1] != null && neighbors[2] != null &&
+                    neighbors[0].IsMerge && neighbors[1].IsMerge && neighbors[2].IsMerge)
+                {
+                    endX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
+                    endY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
+                    neighbors[0].IsMerge = false;
+                    neighbors[0].HasNeighbor = GetNeighbors(neighbors[0]).FirstOrDefault(x => x != null) != null;
+                    neighbors[1].IsMerge = false;
+                    neighbors[1].HasNeighbor = GetNeighbors(neighbors[1]).FirstOrDefault(x => x != null) != null;
+                    neighbors[2].IsMerge = false;
+                    neighbors[2].HasNeighbor = GetNeighbors(neighbors[2]).FirstOrDefault(x => x != null) != null;
+                }
+                else if (neighbors[0] != null && neighbors[1] != null && neighbors[0].IsMerge && neighbors[1].IsMerge)
+                {
+                    var oldX = endX;
+                    endX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
+                    DrawRectangle(startX, startY, endX, endY);
+                    endX = oldX;
+                    endY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
+                }
+                else if (neighbors[0] != null && neighbors[0].IsMerge)
+                {
+                    endX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
+                }
+                else if (neighbors[1] != null && neighbors[1].IsMerge)
+                {
+                    endY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
+                }
+                
+                DrawRectangle(startX, startY, endX, endY);
+            }
+            Extrude(_partsBoxParameters.Height - _partsBoxParameters.BoxBottomWidth, PartFeatureExtentDirectionEnum.kNegativeExtentDirection, PartFeatureOperationEnum.kCutOperation);
+        }
+
+        /// <summary>
+        /// Получить соседей справа, снизу и угловую.
+        /// </summary>
+        /// <param name="cell">Ячейка, соседей которой надо получить.</param>
+        /// <returns>Соседи указанной ячейки.</returns>
+        private List<CellInfo> GetNeighbors(CellInfo cell)
+        {
+            var (widthIndex, lengthIndex) = cell.Index;
+            return new List<CellInfo>
+            {
+                GetCellByIndex(widthIndex + 1, lengthIndex),
+                GetCellByIndex(widthIndex, lengthIndex + 1),
+                GetCellByIndex(widthIndex + 1, lengthIndex + 1)
+            };
+        }
+
+        /// <summary>
+        /// Получить информацию о ячейке по индексу.
+        /// </summary>
+        /// <param name="widthIndex">Индекс по ширине.</param>
+        /// <param name="lengthIndex">Индекс по высоте.</param>
+        /// <returns>Информация о ячейке с соотвествующим индексом.</returns>
+        private CellInfo GetCellByIndex(int widthIndex, int lengthIndex)
+        {
+            return _partsBoxParameters.Cells.FirstOrDefault(x =>
+                x.Index == (widthIndex, lengthIndex));
         }
 
         /// <summary>

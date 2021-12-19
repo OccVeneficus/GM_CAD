@@ -143,9 +143,9 @@ namespace PartsBox.Models
                 Set(ref _cellsInWidth, value);
                 _cellsArray = new CellInfo[_cellsInWidth, _cellsInLength];
                 Cells.Clear();
-                for (var lengthIndex = 0; lengthIndex < CellsInLength; lengthIndex++)
+                for (var widthIndex = 0; widthIndex < CellsInWidth; widthIndex++)
                 {
-                    for (var widthIndex = 0; widthIndex < CellsInWidth; widthIndex++)
+                    for (var lengthIndex = 0; lengthIndex < CellsInLength; lengthIndex++)
                     {
                         Cells.Add(new CellInfo { IsMerge = false, Index = (lengthIndex, widthIndex) });
                     }
@@ -165,11 +165,11 @@ namespace PartsBox.Models
                 Set(ref _cellsInLength, value);
                 _cellsArray = new CellInfo[_cellsInWidth, _cellsInLength];
                 Cells.Clear();
-                for (var lengthIndex = 0; lengthIndex < CellsInLength; lengthIndex++)
+                for (var widthIndex = 0; widthIndex < CellsInWidth; widthIndex++)
                 {
-                    for (var widthIndex = 0; widthIndex < CellsInWidth; widthIndex++)
+                    for (var lengthIndex = 0; lengthIndex < CellsInLength; lengthIndex++)
                     {
-                        Cells.Add(new CellInfo { IsMerge = false, Index = (lengthIndex, widthIndex) });
+                        Cells.Add(new CellInfo { IsMerge = false, Index = (widthIndex, lengthIndex) });
                     }
                 }
             }

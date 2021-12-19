@@ -270,6 +270,12 @@
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
+                <ItemsControl.RenderTransformOrigin>
+                    <Point X="0.5" Y="0.5"></Point>
+                </ItemsControl.RenderTransformOrigin>
+                <ItemsControl.RenderTransform>
+                    <RotateTransform Angle="180"/>
+                </ItemsControl.RenderTransform>
             </ItemsControl>
             <StackPanel
                 Grid.Row="3"
