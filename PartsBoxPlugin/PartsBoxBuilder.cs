@@ -137,41 +137,56 @@ namespace InvAddIn
                 startY = startPointY - startY;
                 var endX = startX + _partsBoxParameters.GetOneCellLength;
                 var endY = startY - _partsBoxParameters.GetOneCellWidth;
-                var neighbors = GetNeighbors(cellInfo);
-                var isAllNotNull = neighbors[0] != null && neighbors[1] != null && neighbors[2] != null;
-
-                if (isAllNotNull && neighbors[0].IsMerge &&
-                    neighbors[1].IsMerge && neighbors[2].IsMerge)
-                {
-                    endX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
-                    endY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
-                    foreach (var neighbor in neighbors)
-                    {
-                        neighbor.IsMerge = false;
-                        var anyNeighbour = GetNeighbors(neighbors[0]).FirstOrDefault(x => x != null);
-                        neighbor.HasNeighbor = anyNeighbour != null;
-                    }
-                }
-                else if (neighbors[0] != null && neighbors[1] != null && neighbors[0].IsMerge && neighbors[1].IsMerge)
-                {
-                    var oldX = endX;
-                    endX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
-                    DrawRectangle(startX, startY, endX, endY);
-                    endX = oldX;
-                    endY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
-                }
-                else if (neighbors[0] != null && neighbors[0].IsMerge)
-                {
-                    endX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
-                }
-                else if (neighbors[1] != null && neighbors[1].IsMerge)
-                {
-                    endY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
-                }
                 
-                DrawRectangle(startX, startY, endX, endY);
+                DrawMergedSketch(cellInfo, endX, endY, startX, startY);
             }
             Extrude(_partsBoxParameters.Height - _partsBoxParameters.BoxBottomWidth, PartFeatureExtentDirectionEnum.kNegativeExtentDirection, PartFeatureOperationEnum.kCutOperation);
+        }
+
+        /// <summary>
+        /// Нарисовать эскиз для слияния ячеек.
+        /// </summary>
+        /// <param name="cellInfo">Информация о ячейке для слияния.</param>
+        /// <param name="endX">Конец квадрата слияния по длине.</param>
+        /// <param name="endY">Конец квадрата слияния по ширине.</param>
+        /// <param name="startX">Начало квадрата слияния по длине.</param>
+        /// <param name="startY">Начало квадрата слияния по ширине.</param>
+        private void DrawMergedSketch(CellInfo cellInfo, double endX, double endY,
+            double startX, double startY)
+        {
+            var neighbors = GetNeighbors(cellInfo);
+            var isAllNotNull = neighbors[0] != null && neighbors[1] != null && neighbors[2] != null;
+
+            if (isAllNotNull && neighbors[0].IsMerge &&
+                neighbors[1].IsMerge && neighbors[2].IsMerge)
+            {
+                endX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
+                endY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
+                foreach (var neighbor in neighbors)
+                {
+                    neighbor.IsMerge = false;
+                    var anyNeighbour = GetNeighbors(neighbors[0]).FirstOrDefault(x => x != null);
+                    neighbor.HasNeighbor = anyNeighbour != null;
+                }
+            }
+            else if (neighbors[0] != null && neighbors[1] != null && neighbors[0].IsMerge && neighbors[1].IsMerge)
+            {
+                var oldX = endX;
+                endX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
+                DrawRectangle(startX, startY, endX, endY);
+                endX = oldX;
+                endY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
+            }
+            else if (neighbors[0] != null && neighbors[0].IsMerge)
+            {
+                endX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
+            }
+            else if (neighbors[1] != null && neighbors[1].IsMerge)
+            {
+                endY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
+            }
+
+            DrawRectangle(startX, startY, endX, endY);
         }
 
         /// <summary>
