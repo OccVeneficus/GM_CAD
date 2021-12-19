@@ -138,18 +138,19 @@ namespace InvAddIn
                 var endX = startX + _partsBoxParameters.GetOneCellLength;
                 var endY = startY - _partsBoxParameters.GetOneCellWidth;
                 var neighbors = GetNeighbors(cellInfo);
+                var isAllNotNull = neighbors[0] != null && neighbors[1] != null && neighbors[2] != null;
 
-                if (neighbors[0] != null && neighbors[1] != null && neighbors[2] != null &&
-                    neighbors[0].IsMerge && neighbors[1].IsMerge && neighbors[2].IsMerge)
+                if (isAllNotNull && neighbors[0].IsMerge &&
+                    neighbors[1].IsMerge && neighbors[2].IsMerge)
                 {
                     endX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
                     endY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
-                    neighbors[0].IsMerge = false;
-                    neighbors[0].HasNeighbor = GetNeighbors(neighbors[0]).FirstOrDefault(x => x != null) != null;
-                    neighbors[1].IsMerge = false;
-                    neighbors[1].HasNeighbor = GetNeighbors(neighbors[1]).FirstOrDefault(x => x != null) != null;
-                    neighbors[2].IsMerge = false;
-                    neighbors[2].HasNeighbor = GetNeighbors(neighbors[2]).FirstOrDefault(x => x != null) != null;
+                    foreach (var neighbor in neighbors)
+                    {
+                        neighbor.IsMerge = false;
+                        var anyNeighbour = GetNeighbors(neighbors[0]).FirstOrDefault(x => x != null);
+                        neighbor.HasNeighbor = anyNeighbour != null;
+                    }
                 }
                 else if (neighbors[0] != null && neighbors[1] != null && neighbors[0].IsMerge && neighbors[1].IsMerge)
                 {
