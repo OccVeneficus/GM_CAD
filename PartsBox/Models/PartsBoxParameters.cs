@@ -60,6 +60,11 @@ namespace PartsBox.Models
         /// </summary>
         private int _cellsInLength = 1;
 
+        /// <summary>
+        /// Коллекция с ифнормацией о ячейках для слияния.
+        /// </summary>
+        private ObservableCollection<CellInfo> _cells = new ObservableCollection<CellInfo>();
+
         #endregion
 
         #region Properties
@@ -141,15 +146,7 @@ namespace PartsBox.Models
             set
             {
                 Set(ref _cellsInWidth, value);
-                _cellsArray = new CellInfo[_cellsInWidth, _cellsInLength];
-                Cells.Clear();
-                for (var widthIndex = 0; widthIndex < CellsInWidth; widthIndex++)
-                {
-                    for (var lengthIndex = 0; lengthIndex < CellsInLength; lengthIndex++)
-                    {
-                        Cells.Add(new CellInfo { IsMerge = false, Index = (lengthIndex, widthIndex) });
-                    }
-                }
+                RepopulateCellsInfos();
             } 
         }
 
@@ -163,19 +160,18 @@ namespace PartsBox.Models
             set
             {
                 Set(ref _cellsInLength, value);
-                _cellsArray = new CellInfo[_cellsInWidth, _cellsInLength];
-                Cells.Clear();
-                for (var widthIndex = 0; widthIndex < CellsInWidth; widthIndex++)
-                {
-                    for (var lengthIndex = 0; lengthIndex < CellsInLength; lengthIndex++)
-                    {
-                        Cells.Add(new CellInfo { IsMerge = false, Index = (widthIndex, lengthIndex) });
-                    }
-                }
+                RepopulateCellsInfos();
             }
         }
 
-        private CellInfo[,] _cellsArray;
+        /// <summary>
+        /// Коллекция с ифнормацией о ячейках для слияния.
+        /// </summary>
+        public ObservableCollection<CellInfo> Cells
+        {
+            get => _cells;
+            set => Set(ref _cells, value);
+        }
 
         /// <summary>
         /// Рассчитать ширину одной ячейки.
@@ -188,6 +184,29 @@ namespace PartsBox.Models
         /// </summary>
         public double GetOneCellLength => CalculateOneCellSize(Length, OuterWallWidth,
             InnerWallWidth, CellsInLength);
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Обновить коллекцию информации о ячейках для слияния.
+        /// </summary>
+        private void RepopulateCellsInfos()
+        {
+            Cells.Clear();
+            for (var widthIndex = 0; widthIndex < CellsInWidth; widthIndex++)
+            {
+                for (var lengthIndex = 0; lengthIndex < CellsInLength; lengthIndex++)
+                {
+                    Cells.Add(new CellInfo
+                    {
+                        IsMerge = false,
+                        Index = (lengthIndex, widthIndex)
+                    });
+                }
+            }
+        }
 
         #endregion
 
@@ -208,14 +227,6 @@ namespace PartsBox.Models
             var cellsCombinedWidth = dimensionSize - 2 *
                 outerWallWidth - (cellsInDimension - 1) * innerWallWidth;
             return cellsCombinedWidth / cellsInDimension;
-        }
-
-        private  ObservableCollection<CellInfo> _cells = new ObservableCollection<CellInfo>();
-
-        public ObservableCollection<CellInfo> Cells
-        {
-            get => _cells;
-            set => Set(ref _cells, value);
         }
 
         /// <summary>
