@@ -142,7 +142,12 @@ namespace InvAddIn
         /// <param name="startPointY">Начальная точка по Y.</param>
         private void MergeCells(double startPointX, double startPointY)
         {
-            foreach (var cellInfo in _partsBoxParameters.Cells.Where(x=>x.IsMerge || x.HasNeighbor))
+            var cellsToMerge = _partsBoxParameters.Cells.Where(x => x.IsMerge || x.HasNeighbor).ToList();
+            if (cellsToMerge.Count() <= 1)
+            {
+                return;
+            }
+            foreach (var cellInfo in cellsToMerge)
             {
                 var startX = (_partsBoxParameters.GetOneCellLength +
                               _partsBoxParameters.InnerWallWidth) * cellInfo.Index.Item1;
