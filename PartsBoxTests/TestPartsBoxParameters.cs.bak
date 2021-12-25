@@ -5,18 +5,18 @@ namespace PartsBoxTests
 {
     //TODO: кодировка
     /// <summary>
-    /// Тесты для <see cref="PartsBoxParameters"/>.
+    /// Òåñòû äëÿ <see cref="PartsBoxParameters"/>.
     /// </summary>
     [TestFixture]
     public class TestPartsBoxParameters
     {
         /// <summary>
-        /// Экземпляр параметров коробки для тестирования.
+        /// Ýêçåìïëÿð ïàðàìåòðîâ êîðîáêè äëÿ òåñòèðîâàíèÿ.
         /// </summary>
         private static PartsBoxParameters BoxParameters => new PartsBoxParameters();
 
         /// <summary>
-        /// Экземпляр параметров коробки с неверными значениями в свойствах.
+        /// Ýêçåìïëÿð ïàðàìåòðîâ êîðîáêè ñ íåâåðíûìè çíà÷åíèÿìè â ñâîéñòâàõ.
         /// </summary>
         private static PartsBoxParameters WrongBoxParameters => new PartsBoxParameters
         {

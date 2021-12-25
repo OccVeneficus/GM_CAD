@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 
 namespace PartsBox.Models
@@ -22,11 +17,6 @@ namespace PartsBox.Models
         /// Индекс ячейки по высоте и ширине.
         /// </summary>
         private (int, int) _index;
-
-        /// <summary>
-        /// Команда изменения статуса ячейки.
-        /// </summary>
-        private RelayCommand _changeMergeStatusCommand;
 
         /// <summary>
         /// Имеет соседей.
@@ -63,16 +53,14 @@ namespace PartsBox.Models
         /// <summary>
         /// Команда смены статуса слияния ячекйки.
         /// </summary>
-        public RelayCommand ChangeMergeStatusCommand
+        public RelayCommand ChangeMergeStatusCommand { get; }
+
+        public CellInfo()
         {
-            get
+            ChangeMergeStatusCommand = new RelayCommand(() =>
             {
-                //TODO:
-                return _changeMergeStatusCommand ?? new RelayCommand(() =>
-                {
-                    IsMerge = !IsMerge;
-                });
-            }
+                IsMerge = !IsMerge;
+            });
         }
     }
 }

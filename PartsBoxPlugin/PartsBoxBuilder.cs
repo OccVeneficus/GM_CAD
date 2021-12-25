@@ -129,7 +129,8 @@ namespace InvAddIn
             DrawRectangularMatrix(leftCornerX, leftCornerY);
 
             Extrude(_partsBoxParameters.Height - _partsBoxParameters.BoxBottomWidth,
-                PartFeatureExtentDirectionEnum.kNegativeExtentDirection, PartFeatureOperationEnum.kCutOperation);
+                PartFeatureExtentDirectionEnum.kNegativeExtentDirection,
+                PartFeatureOperationEnum.kCutOperation);
 
             CreateSketch(2, "Merge");
 
@@ -143,7 +144,8 @@ namespace InvAddIn
         /// <param name="startPointY">Начальная точка по Y.</param>
         private void MergeCells(double startPointX, double startPointY)
         {
-            var cellsToMerge = _partsBoxParameters.Cells.Where(x => x.IsMerge || x.HasNeighbor).ToList();
+            var cellsToMerge = _partsBoxParameters.Cells.Where(x => x.IsMerge 
+                                                                    || x.HasNeighbor).ToList();
             if (cellsToMerge.Count() <= 1)
             {
                 return;
@@ -162,7 +164,8 @@ namespace InvAddIn
                 DrawMergedSketch(cellInfo, endX, endY, startX, startY);
             }
             Extrude(_partsBoxParameters.Height - _partsBoxParameters.BoxBottomWidth,
-                PartFeatureExtentDirectionEnum.kNegativeExtentDirection, PartFeatureOperationEnum.kCutOperation);
+                PartFeatureExtentDirectionEnum.kNegativeExtentDirection,
+                PartFeatureOperationEnum.kCutOperation);
         }
 
         /// <summary>
@@ -187,11 +190,13 @@ namespace InvAddIn
                 foreach (var neighbor in neighbors)
                 {
                     neighbor.IsMerge = false;
-                    var anyNeighbour = GetNeighbors(neighbors[0]).FirstOrDefault(x => x != null);
+                    var anyNeighbour = GetNeighbors(neighbors[0]).FirstOrDefault(x =>
+                        x != null);
                     neighbor.HasNeighbor = anyNeighbour != null;
                 }
             }
-            else if (neighbors[0] != null && neighbors[1] != null && neighbors[0].IsMerge && neighbors[1].IsMerge)
+            else if (neighbors[0] != null && neighbors[1] != null && neighbors[0].IsMerge &&
+                     neighbors[1].IsMerge)
             {
                 var oldX = endX;
                 endX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
@@ -263,7 +268,8 @@ namespace InvAddIn
         /// <param name="pointOneY">Y координата верхнего угла.</param>
         /// <param name="pointTwoX">X координата нижнего угла.</param>
         /// <param name="pointTwoY">Y координата нижнего угла.</param>
-        public void DrawRectangle(double pointOneX, double pointOneY, double pointTwoX, double pointTwoY)
+        public void DrawRectangle(double pointOneX, double pointOneY,
+            double pointTwoX, double pointTwoY)
         {
             pointOneX /= MmInCm;
             pointOneY /= MmInCm;
@@ -284,16 +290,21 @@ namespace InvAddIn
             for(var cellsInLength = 0; cellsInLength < _partsBoxParameters.CellsInLength; cellsInLength++)
             {
                 var firstStartPointY = startPointY;
-                for (var cellsInWidth = 0; cellsInWidth < _partsBoxParameters.CellsInWidth; cellsInWidth++)
+                for (var cellsInWidth = 0; cellsInWidth < _partsBoxParameters.CellsInWidth;
+                     cellsInWidth++)
                 {
-                    var endPointX = startPointX + _partsBoxParameters.GetOneCellLength;
-                    var endPointY = startPointY - _partsBoxParameters.GetOneCellWidth;
+                    var endPointX = startPointX +
+                                    _partsBoxParameters.GetOneCellLength;
+                    var endPointY = startPointY -
+                                    _partsBoxParameters.GetOneCellWidth;
                     //TODO: RSDN
                     DrawRectangle(startPointX, startPointY, endPointX, endPointY);
-                    startPointY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
+                    startPointY -= _partsBoxParameters.GetOneCellWidth +
+                                   _partsBoxParameters.InnerWallWidth;
                 }
                 startPointY = firstStartPointY;
-                startPointX += _partsBoxParameters.GetOneCellLength + _partsBoxParameters.InnerWallWidth;
+                startPointX += _partsBoxParameters.GetOneCellLength +
+                               _partsBoxParameters.InnerWallWidth;
             }
         }
 
