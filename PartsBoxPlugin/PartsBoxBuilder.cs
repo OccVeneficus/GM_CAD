@@ -81,6 +81,7 @@ namespace InvAddIn
             _partDocument = Application.ActiveDocument as PartDocument;
             _progressBar = Application.CreateProgressBar(false, 4, "Building parts box.");
             _partDefinition = _partDocument.ComponentDefinition;
+            var a = _partDefinition.Features;
             _transGeometry = Application.TransientGeometry;
             _progressBar.Message = @"Building box block";
             _progressBar.UpdateProgress();
@@ -309,7 +310,7 @@ namespace InvAddIn
             {
                 name = $"Sketch {Index}";
             }
-            _currentSketch.Name = name;
+            //_currentSketch.Name = name;
             return _currentSketch;
             
         }

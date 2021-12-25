@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartsBoxPlugin", "PartsBoxP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartsBox", "PartsBox\PartsBox.csproj", "{4B93E391-22E3-49D2-826F-687A93B8A1B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartsBoxTests", "PartsBoxTests\PartsBoxTests.csproj", "{200F0093-BBC3-4E17-A100-A8835879A0F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartsBoxTests", "PartsBoxTests\PartsBoxTests.csproj", "{200F0093-BBC3-4E17-A100-A8835879A0F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StressTest", "StressTest\StressTest.csproj", "{E54C275E-96BA-424E-9B59-7EDDEA1FF8C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{200F0093-BBC3-4E17-A100-A8835879A0F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{200F0093-BBC3-4E17-A100-A8835879A0F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{200F0093-BBC3-4E17-A100-A8835879A0F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E54C275E-96BA-424E-9B59-7EDDEA1FF8C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E54C275E-96BA-424E-9B59-7EDDEA1FF8C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E54C275E-96BA-424E-9B59-7EDDEA1FF8C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E54C275E-96BA-424E-9B59-7EDDEA1FF8C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

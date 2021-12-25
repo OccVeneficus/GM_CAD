@@ -1,8 +1,11 @@
 ﻿
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using InvAddIn;
 using Inventor;
+using Microsoft.VisualBasic.Devices;
 using PartsBox.Models;
 
 namespace StressTest
@@ -55,7 +58,23 @@ namespace StressTest
             var builder = new PartsBoxBuilder();
             builder.Application = InventorApplication;
             var boxParameters = new PartsBoxParameters();
-            builder.BuildPartsBox(boxParameters);
+            boxParameters.CellsInLength = 5;
+            boxParameters.CellsInWidth = 5;
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            var streamWriter = new StreamWriter($"log.txt", true);
+            Process currentProcess = System.Diagnostics.Process.GetCurrentProcess();
+            var count = 0;
+            while (true)
+            {
+                builder.BuildPartsBox(boxParameters);
+                var computerInfo = new ComputerInfo();
+                var usedMemory = (computerInfo.TotalPhysicalMemory - computerInfo.AvailablePhysicalMemory) *
+                                 0.000000000931322574615478515625;
+                streamWriter.WriteLine(
+                    $"{++count}\t{stopWatch.Elapsed:hh\\:mm\\:ss}\t{usedMemory}");
+                streamWriter.Flush();
+            }
         }
 
         public static PartComponentDefinition PartDefinition { get; set; }
