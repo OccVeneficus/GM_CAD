@@ -288,6 +288,7 @@ namespace InvAddIn
                 {
                     var endPointX = startPointX + _partsBoxParameters.GetOneCellLength;
                     var endPointY = startPointY - _partsBoxParameters.GetOneCellWidth;
+                    //TODO: RSDN
                     DrawRectangle(startPointX, startPointY, endPointX, endPointY);
                     startPointY -= _partsBoxParameters.GetOneCellWidth + _partsBoxParameters.InnerWallWidth;
                 }

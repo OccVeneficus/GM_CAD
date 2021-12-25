@@ -46,7 +46,6 @@ namespace PartsBox.Models
             Func<double, double, double, int, double> oneCellSizeCalculationFunc,
             double dimensionSize, double innerWallWidth, double outerWallWidth, int userValue)
         {
-            //TODO: дублирование
             var oneCellWidth =
                 oneCellSizeCalculationFunc(dimensionSize, innerWallWidth, outerWallWidth, userValue);
             return oneCellWidth > MinCellWidht;

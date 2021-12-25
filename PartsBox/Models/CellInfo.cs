@@ -67,6 +67,7 @@ namespace PartsBox.Models
         {
             get
             {
+                //TODO:
                 return _changeMergeStatusCommand ?? new RelayCommand(() =>
                 {
                     IsMerge = !IsMerge;

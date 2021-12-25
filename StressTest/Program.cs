@@ -55,11 +55,15 @@ namespace StressTest
             PartDefinition = PartDoc.ComponentDefinition;
             // Инициализация метода геометрии
             TransientGeometry = InventorApplication.TransientGeometry;
-            var builder = new PartsBoxBuilder();
-            builder.Application = InventorApplication;
-            var boxParameters = new PartsBoxParameters();
-            boxParameters.CellsInLength = 5;
-            boxParameters.CellsInWidth = 5;
+            var builder = new PartsBoxBuilder
+            {
+                Application = InventorApplication
+            };
+            var boxParameters = new PartsBoxParameters
+            {
+                CellsInLength = 5,
+                CellsInWidth = 5
+            };
             var stopWatch = new Stopwatch();
             stopWatch.Start();
             var streamWriter = new StreamWriter($"log.txt", true);
