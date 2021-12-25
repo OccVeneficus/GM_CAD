@@ -30,7 +30,7 @@ namespace PartsBoxTests
             CellsInWidth = 200
         };
 
-        [TestCase(50.0, TestName = "Ïðîâåðêà ïîëó÷åíèÿ êîððåêòíîãî çíà÷åíèÿ ñâîéñòâà Height.")]
+        [TestCase(50.0, TestName = "Проверка получения корректного значения свойства Height.")]
         public void TestBoxHeigthProperty_CorrectGetValue(double correctTestValue)
         {
             // Arrange
@@ -43,10 +43,10 @@ namespace PartsBoxTests
             var actual = boxParameters.Height;
 
             // Assert
-            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.Height)} âåðíóë íåêîððåêòíîå çíà÷åíèå.");
+            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.Height)} вернул некорректное значение.");
         }
 
-        [TestCase(50.0, TestName = "Ïðîâåðêà ïîëó÷åíèÿ êîððåêòíîãî çíà÷åíèÿ ñâîéñòâà Width.")]
+        [TestCase(50.0, TestName = "Проверка получения корректного значения свойства Width.")]
         public void TestBoxWidthProperty_CorrectGetValue(double correctTestValue)
         {
             // Arrange
@@ -59,10 +59,10 @@ namespace PartsBoxTests
             var actual = boxParameters.Width;
 
             // Assert
-            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.Width)} âåðíóë íåêîððåêòíîå çíà÷åíèå.");
+            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.Width)} вернул некорректное значение.");
         }
 
-        [TestCase(50.0, TestName = "Ïðîâåðêà ïîëó÷åíèÿ êîððåêòíîãî çíà÷åíèÿ ñâîéñòâà Length.")]
+        [TestCase(50.0, TestName = "Проверка получения корректного значения свойства Length.")]
         public void TestBoxLengthProperty_CorrectGetValue(double correctTestValue)
         {
             // Arrange
@@ -75,10 +75,10 @@ namespace PartsBoxTests
             var actual = boxParameters.Length;
 
             // Assert
-            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.Length)} âåðíóë íåêîððåêòíîå çíà÷åíèå.");
+            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.Length)} вернул некорректное значение.");
         }
 
-        [TestCase(50.0, TestName = "Ïðîâåðêà ïîëó÷åíèÿ êîððåêòíîãî çíà÷åíèÿ ñâîéñòâà OuterWallWidth.")]
+        [TestCase(50.0, TestName = "Проверка получения корректного значения свойства OuterWallWidth.")]
         public void TestBoxOuterWallWidthProperty_CorrectGetValue(double correctTestValue)
         {
             // Arrange
@@ -91,10 +91,10 @@ namespace PartsBoxTests
             var actual = boxParameters.OuterWallWidth;
 
             // Assert
-            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.OuterWallWidth)} âåðíóë íåêîððåêòíîå çíà÷åíèå.");
+            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.OuterWallWidth)} вернул некорректное значение.");
         }
 
-        [TestCase(50.0, TestName = "Ïðîâåðêà ïîëó÷åíèÿ êîððåêòíîãî çíà÷åíèÿ ñâîéñòâà InnerWallWidth.")]
+        [TestCase(50.0, TestName = "Проверка получения корректного значения свойства InnerWallWidth.")]
         public void TestBoxInnerWallWidthProperty_CorrectGetValue(double correctTestValue)
         {
             // Arrange
@@ -107,10 +107,10 @@ namespace PartsBoxTests
             var actual = boxParameters.InnerWallWidth;
 
             // Assert
-            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.InnerWallWidth)} âåðíóë íåêîððåêòíîå çíà÷åíèå.");
+            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.InnerWallWidth)} вернул некорректное значение.");
         }
 
-        [TestCase(50.0, TestName = "Ïðîâåðêà ïîëó÷åíèÿ êîððåêòíîãî çíà÷åíèÿ ñâîéñòâà BoxBottomWidth.")]
+        [TestCase(50.0, TestName = "Проверка получения корректного значения свойства BoxBottomWidth.")]
         public void TestBoxBoxBottomWidthProperty_CorrectGetValue(double correctTestValue)
         {
             // Arrange
@@ -123,10 +123,10 @@ namespace PartsBoxTests
             var actual = boxParameters.BoxBottomWidth;
 
             // Assert
-            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.BoxBottomWidth)} âåðíóë íåêîððåêòíîå çíà÷åíèå.");
+            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.BoxBottomWidth)} вернул некорректное значение.");
         }
 
-        [TestCase(1, TestName = "Ïðîâåðêà ïîëó÷åíèÿ êîððåêòíîãî çíà÷åíèÿ ñâîéñòâà CellsInWidth.")]
+        [TestCase(1, TestName = "Проверка получения корректного значения свойства CellsInWidth.")]
         public void TestBoxCellsInWidthProperty_CorrectGetValue(int correctTestValue)
         {
             // Arrange
@@ -139,10 +139,10 @@ namespace PartsBoxTests
             var actual = boxParameters.CellsInWidth;
 
             // Assert
-            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.CellsInWidth)} âåðíóë íåêîððåêòíîå çíà÷åíèå.");
+            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.CellsInWidth)} вернул некорректное значение.");
         }
 
-        [TestCase(1, TestName = "Ïðîâåðêà ïîëó÷åíèÿ êîððåêòíîãî çíà÷åíèÿ ñâîéñòâà CellsInLength.")]
+        [TestCase(1, TestName = "Проверка получения корректного значения свойства CellsInLength.")]
         public void TestBoxCellsInLengthProperty_CorrectGetValue(int correctTestValue)
         {
             // Arrange
@@ -155,10 +155,10 @@ namespace PartsBoxTests
             var actual = boxParameters.CellsInLength;
 
             // Assert
-            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.CellsInLength)} âåðíóë íåêîððåêòíîå çíà÷åíèå.");
+            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.CellsInLength)} вернул некорректное значение.");
         }
 
-        [TestCase(69.0,TestName = "Ïðîâåðÿåò êîððåêòíîñòü ðàñ÷åòà øèðèíû îäíîé ÿ÷åéêè.")]
+        [TestCase(69.0,TestName = "Проверяет корректность расчета ширины одной ячейки.")]
         public void TestGetOneCellWidthProperty_CorrectValue(double correctTestValue)
         {
             // Arrange
@@ -171,10 +171,10 @@ namespace PartsBoxTests
             var actual = boxParameters.GetOneCellWidth;
 
             // Assert
-            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.GetOneCellWidth)} íåêîððåêòíî ðàññ÷èòàë øèðèíó îäíîé ÿ÷åéêè.");
+            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.GetOneCellWidth)} некорректно рассчитал ширину одной ячейки.");
         }
 
-        [TestCase(69.0, TestName = "Ïðîâåðÿåò êîððåêòíîñòü ðàñ÷åòà øèðèíû îäíîé ÿ÷åéêè.")]
+        [TestCase(69.0, TestName = "Проверяет корректность расчета длины одной ячейки.")]
         public void TestGetOneCellLengthProperty_CorrectValue(double correctTestValue)
         {
             // Arrange
@@ -187,11 +187,11 @@ namespace PartsBoxTests
             var actual = boxParameters.GetOneCellLength;
 
             // Assert
-            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.GetOneCellLength)} íåêîððåêòíî ðàññ÷èòàë øèðèíó îäíîé ÿ÷åéêè.");
+            Assert.AreEqual(expected, actual, $"{nameof(boxParameters.GetOneCellLength)} некорректно рассчитал длину одной ячейки.");
         }
 
-        [TestCase("", TestName = "Ïðîâåðêà ìåòîäà GetErrors ñ propertyName ðàâíûì ïóñòîé ñòðîêå")]
-        [TestCase(null, TestName = "Ïðîâåðêà ìåòîäà GetErrors ñ propertyName ðàâíûì null")]
+        [TestCase("", TestName = "Проверка метода GetErrors с propertyName равным пустой строке")]
+        [TestCase(null, TestName = "Проверка метода GetErrors с propertyName равным null")]
         public void TestGetErrors_NoErrorsValue(string testPropertyName)
         {
             // Arrange
@@ -201,25 +201,25 @@ namespace PartsBoxTests
             var actual = boxParameters.GetErrors(testPropertyName);
 
             // Assert
-            Assert.IsEmpty(actual, "Ìåòîä âåðíóë íå ïóñòîé íàáîð ñîîáùåíèé îá îøèáêàõ ïðè êîððåêòíûõ äàííûõ.");
+            Assert.IsEmpty(actual, "Метод вернул не пустой набор сообщений об ошибках при корректных данных.");
         }
 
         [TestCase(nameof(PartsBoxParameters.Height), "Height must be between 50 and 150 mm.",
-            TestName = "Ïðîâåðêà ìåòîäà GetErrors ñ propertyName ðàâíûì Height è íàëè÷èåì ñòðîêè îøèáêè.")]
+            TestName = "Проверка метода GetErrors с propertyName равным Height и наличием строки ошибки.")]
         [TestCase(nameof(PartsBoxParameters.Length), "Length must be between 150 and 700 mm.",
-            TestName = "Ïðîâåðêà ìåòîäà GetErrors ñ propertyName ðàâíûì Length è íàëè÷èåì ñòðîêè îøèáêè.")]
+            TestName = "Проверка метода GetErrors с propertyName равным Length и наличием строки ошибки.")]
         [TestCase(nameof(PartsBoxParameters.Width), "Width must be between 150 and 700 mm.",
-            TestName = "Ïðîâåðêà ìåòîäà GetErrors ñ propertyName ðàâíûì Width è íàëè÷èåì ñòðîêè îøèáêè.")]
+            TestName = "Проверка метода GetErrors с propertyName равным Width и наличием строки ошибки.")]
         [TestCase(nameof(PartsBoxParameters.OuterWallWidth), "OuterWallWidth must be between 5 and 10 mm.",
-            TestName = "Ïðîâåðêà ìåòîäà GetErrors ñ propertyName ðàâíûì OuterWallWidth è íàëè÷èåì ñòðîêè îøèáêè.")]
+            TestName = "Проверка метода GetErrors с propertyName равным OuterWallWidth и наличием строки ошибки.")]
         [TestCase(nameof(PartsBoxParameters.InnerWallWidth), "InnerWallWidth must be between 2 and 5 mm.",
-            TestName = "Ïðîâåðêà ìåòîäà GetErrors ñ propertyName ðàâíûì InnerWallWidth è íàëè÷èåì ñòðîêè îøèáêè.")]
+            TestName = "Проверка метода GetErrors с propertyName равным InnerWallWidth и наличием строки ошибки.")]
         [TestCase(nameof(PartsBoxParameters.BoxBottomWidth), "BoxBottomWidth must be between 5 and 10 mm.",
-            TestName = "Ïðîâåðêà ìåòîäà GetErrors ñ propertyName ðàâíûì BoxBottomWidth è íàëè÷èåì ñòðîêè îøèáêè.")]
+            TestName = "Проверка метода GetErrors с propertyName равным BoxBottomWidth и наличием строки ошибки.")]
         [TestCase(nameof(PartsBoxParameters.CellsInLength), "CellsInLength incorrect ",
-            TestName = "Ïðîâåðêà ìåòîäà GetErrors ñ propertyName ðàâíûì CellsInLength è íàëè÷èåì ñòðîêè îøèáêè.")]
+            TestName = "Проверка метода GetErrors с propertyName равным CellsInLength и наличием строки ошибки.")]
         [TestCase(nameof(PartsBoxParameters.CellsInWidth), "CellsInWidth incorrect ",
-            TestName = "Ïðîâåðêà ìåòîäà GetErrors ñ propertyName ðàâíûì CellsInWidth è íàëè÷èåì ñòðîêè îøèáêè.")]
+            TestName = "Проверка метода GetErrors с propertyName равным CellsInWidth и наличием строки ошибки.")]
         public void TestGetErrors_HaveErrorsValue(string testPropertyName, string correctErrorString)
         {
             // Arrange
@@ -230,12 +230,12 @@ namespace PartsBoxTests
             {
                 var actual = error as string;
                 // Assert
-                Assert.AreEqual(correctErrorString, actual, "Ñòðîêà ñ îøèáêîé íå ðàâíà îæèäàåìîé.");
+                Assert.AreEqual(correctErrorString, actual, "Строка с ошибкой не равна ожидаемой.");
             }
 
         }
 
-        [TestCase(TestName = "Ïðîâåðêà ìåòîäà óñòàíîâêè ñòàíäàðòíûõ çíà÷åíèé ñâîéñòâàì.")]
+        [TestCase(TestName = "Проверка метода установки стандартных значений свойствам.")]
         public void TestSetDefaultValues_Positive()
         {
             // Arrange
@@ -246,11 +246,11 @@ namespace PartsBoxTests
             modifiedBoxParameters.SetDefaultValues();
 
             // Assert
-            Assert.AreEqual(defaultBoxParametes, modifiedBoxParameters, "Ñòàíäàðòíûå ïàðàìåòðû óñòàíîâëåíû íåâåðíî.");
+            Assert.AreEqual(defaultBoxParametes, modifiedBoxParameters, "Стандартные параметры установлены неверно.");
         }
 
-        [TestCase(TestName = "Ïðîâåðêà ïåðåãðóçêè îïåðàòîðà ïðîâåðêè ðàâåíñòâà" +
-                             " äâóõ ýêçåìïëÿðîâ îáúåêòà ñ íåêîððåêòíûì çíà÷åíèåì.")]
+        [TestCase(TestName = "Проверка перегрузки оператора проверки равенства" +
+                             " двух экземпляров объекта с некорректным значением.")]
         public void TestEquals_NullValue()
         {
             // Arrange
@@ -260,7 +260,7 @@ namespace PartsBoxTests
             var areEqual = defaultBoxParametes.Equals(null);
 
             // Assert
-            Assert.False(areEqual, "Íåêîððåêòíûé ðåçóëüòàò ñðàâíåíèÿ îáúåêòà ñ null.");
+            Assert.False(areEqual, "Некорректный результат сравнения объекта с null.");
         }
     }
 }
