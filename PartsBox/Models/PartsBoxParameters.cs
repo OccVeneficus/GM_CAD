@@ -323,10 +323,7 @@ namespace PartsBox.Models
         /// <inheritdoc/>
         public override IEnumerable GetErrors(string propertyName = null)
         {
-            foreach (var obj in base.GetErrors(propertyName))
-            {
-                yield return obj;
-            }
+
 
             var properties = GetType().GetProperties();
 

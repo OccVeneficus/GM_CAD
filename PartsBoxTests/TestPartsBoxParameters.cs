@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using NUnit.Framework;
 using PartsBox.Models;
 
@@ -261,6 +262,39 @@ namespace PartsBoxTests
 
             // Assert
             Assert.False(areEqual, "Некорректный результат сравнения объекта с null.");
+        }
+
+        [TestCase(TestName = "Позитивный тест сеттера свойства Cells")]
+        public void TestCells_PositiveSet()
+        {
+            // Arrange
+            var parameters = BoxParameters;
+            var expected = new ObservableCollection<CellInfo>
+            {
+                new CellInfo{Index = (0, 0)},
+                new CellInfo{Index = (1, 1)}
+            };
+
+            // Act
+            parameters.Cells = expected;
+            var actual = parameters.Cells;
+
+            //Assert
+            CollectionAssert.AreEqual(expected,actual, "Коллекция информации о ячеках" +
+                                                       " не совпала с ожидаемой.");
+        }
+
+        [TestCase(TestName = "Тестирование геттера команды.")]
+        public void TestCells_CommandGet()
+        {
+            // Arrange
+            var cell = new CellInfo();
+
+            // Act
+            cell.ChangeMergeStatusCommand.Execute(null);
+
+            // Assert
+            Assert.IsTrue(cell.ChangeMergeStatusCommand.CanExecute(null), "Неправильная работа комманды.");
         }
     }
 }
