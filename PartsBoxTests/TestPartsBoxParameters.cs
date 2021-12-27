@@ -4,7 +4,6 @@ using PartsBox.Models;
 
 namespace PartsBoxTests
 {
-    //TODO: кодировка
     /// <summary>
     /// Тесты для <see cref="PartsBoxParameters"/>.
     /// </summary>
